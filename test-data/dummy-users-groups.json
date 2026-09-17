@@ -1,0 +1,26 @@
+{
+  "users": [
+    {"username":"sara.ali","password":"DummyPass!2026","displayName":"Sara Ali","email":"sara.ali@example.test","role":"Team Leader"},
+    {"username":"omar.hassan","password":"DummyPass!2026","displayName":"Omar Hassan","email":"omar.hassan@example.test","role":"Employee"},
+    {"username":"layla.said","password":"DummyPass!2026","displayName":"Layla Said","email":"layla.said@example.test","role":"Employee"},
+    {"username":"khalid.nasser","password":"DummyPass!2026","displayName":"Khalid Nasser","email":"khalid.nasser@example.test","role":"Team Leader"},
+    {"username":"reem.salem","password":"DummyPass!2026","displayName":"Reem Salem","email":"reem.salem@example.test","role":"Employee"},
+    {"username":"yousef.amin","password":"DummyPass!2026","displayName":"Yousef Amin","email":"yousef.amin@example.test","role":"Employee"},
+    {"username":"fatma.rashid","password":"DummyPass!2026","displayName":"Fatma Rashid","email":"fatma.rashid@example.test","role":"Team Leader"},
+    {"username":"hamad.saeed","password":"DummyPass!2026","displayName":"Hamad Saeed","email":"hamad.saeed@example.test","role":"Employee"},
+    {"username":"maryam.hilal","password":"DummyPass!2026","displayName":"Maryam Hilal","email":"maryam.hilal@example.test","role":"Employee"},
+    {"username":"ali.mansoor","password":"DummyPass!2026","displayName":"Ali Mansoor","email":"ali.mansoor@example.test","role":"Team Leader"},
+    {"username":"noor.ahmed","password":"DummyPass!2026","displayName":"Noor Ahmed","email":"noor.ahmed@example.test","role":"Employee"},
+    {"username":"salim.issa","password":"DummyPass!2026","displayName":"Salim Issa","email":"salim.issa@example.test","role":"Employee"},
+    {"username":"maha.khalfan","password":"DummyPass!2026","displayName":"Maha Khalfan","email":"maha.khalfan@example.test","role":"Team Leader"},
+    {"username":"abdullah.hamed","password":"DummyPass!2026","displayName":"Abdullah Hamed","email":"abdullah.hamed@example.test","role":"Employee"},
+    {"username":"huda.sultan","password":"DummyPass!2026","displayName":"Huda Sultan","email":"huda.sultan@example.test","role":"Employee"}
+  ],
+  "groups": [
+    {"name":"Cyber Security","description":"SOC, incident response and security operations","manager":"sara.ali","members":["sara.ali","omar.hassan","layla.said"]},
+    {"name":"Network Operations","description":"Network infrastructure and connectivity","manager":"khalid.nasser","members":["khalid.nasser","reem.salem","yousef.amin"]},
+    {"name":"Systems Administration","description":"Windows and Linux server administration","manager":"fatma.rashid","members":["fatma.rashid","hamad.saeed","maryam.hilal"]},
+    {"name":"Help Desk","description":"End-user support and service requests","manager":"ali.mansoor","members":["ali.mansoor","noor.ahmed","salim.issa"]},
+    {"name":"Development","description":"Internal applications and automation","manager":"maha.khalfan","members":["maha.khalfan","abdullah.hamed","huda.sultan"]}
+  ]
+}
