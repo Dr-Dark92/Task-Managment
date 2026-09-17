@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title }} · Task Management</title>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <div class="brand-mark">TM</div>
+    <h1>Initial setup</h1>
+    <p class="muted">Create the first system administrator. This page disappears after initialization.</p>
+    <form method="post" action="/setup" autocomplete="off">
+      <label>Username<input name="username" required minlength="3" maxlength="80" autofocus></label>
+      <label>Display name<input name="display_name" maxlength="160"></label>
+      <label>Email<input name="email" type="email" maxlength="254"></label>
+      <label>Password<input name="password" type="password" required minlength="12" autocomplete="new-password"></label>
+      <label>Confirm password<input name="confirm_password" type="password" required minlength="12" autocomplete="new-password"></label>
+      <button type="submit">Create administrator</button>
+    </form>
+  </main>
+</body>
+</html>
