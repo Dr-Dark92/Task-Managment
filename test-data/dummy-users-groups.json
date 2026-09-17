@@ -1,26 +1,26 @@
 {
   "users": [
-    {"username":"sara.ali","password":"DummyPass!2026","displayName":"Sara Ali","email":"sara.ali@example.test","role":"Team Leader"},
-    {"username":"omar.hassan","password":"DummyPass!2026","displayName":"Omar Hassan","email":"omar.hassan@example.test","role":"Employee"},
-    {"username":"layla.said","password":"DummyPass!2026","displayName":"Layla Said","email":"layla.said@example.test","role":"Employee"},
-    {"username":"khalid.nasser","password":"DummyPass!2026","displayName":"Khalid Nasser","email":"khalid.nasser@example.test","role":"Team Leader"},
-    {"username":"reem.salem","password":"DummyPass!2026","displayName":"Reem Salem","email":"reem.salem@example.test","role":"Employee"},
-    {"username":"yousef.amin","password":"DummyPass!2026","displayName":"Yousef Amin","email":"yousef.amin@example.test","role":"Employee"},
-    {"username":"fatma.rashid","password":"DummyPass!2026","displayName":"Fatma Rashid","email":"fatma.rashid@example.test","role":"Team Leader"},
-    {"username":"hamad.saeed","password":"DummyPass!2026","displayName":"Hamad Saeed","email":"hamad.saeed@example.test","role":"Employee"},
-    {"username":"maryam.hilal","password":"DummyPass!2026","displayName":"Maryam Hilal","email":"maryam.hilal@example.test","role":"Employee"},
-    {"username":"ali.mansoor","password":"DummyPass!2026","displayName":"Ali Mansoor","email":"ali.mansoor@example.test","role":"Team Leader"},
-    {"username":"noor.ahmed","password":"DummyPass!2026","displayName":"Noor Ahmed","email":"noor.ahmed@example.test","role":"Employee"},
-    {"username":"salim.issa","password":"DummyPass!2026","displayName":"Salim Issa","email":"salim.issa@example.test","role":"Employee"},
-    {"username":"maha.khalfan","password":"DummyPass!2026","displayName":"Maha Khalfan","email":"maha.khalfan@example.test","role":"Team Leader"},
-    {"username":"abdullah.hamed","password":"DummyPass!2026","displayName":"Abdullah Hamed","email":"abdullah.hamed@example.test","role":"Employee"},
-    {"username":"huda.sultan","password":"DummyPass!2026","displayName":"Huda Sultan","email":"huda.sultan@example.test","role":"Employee"}
+    {"username":"DUMMY.USER.SARA-ALI","password":"DummyPass!2026","displayName":"DUMMY Sara Ali","email":"dummy.sara@example.test","role":"Team Leader"},
+    {"username":"DUMMY.USER.OMAR-HASSAN","password":"DummyPass!2026","displayName":"DUMMY Omar Hassan","email":"dummy.omar@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.LAYLA-SAID","password":"DummyPass!2026","displayName":"DUMMY Layla Said","email":"dummy.layla@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.KHALID-NASSER","password":"DummyPass!2026","displayName":"DUMMY Khalid Nasser","email":"dummy.khalid@example.test","role":"Team Leader"},
+    {"username":"DUMMY.USER.REEM-SALEM","password":"DummyPass!2026","displayName":"DUMMY Reem Salem","email":"dummy.reem@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.YOUSEF-AMIN","password":"DummyPass!2026","displayName":"DUMMY Yousef Amin","email":"dummy.yousef@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.FATMA-RASHID","password":"DummyPass!2026","displayName":"DUMMY Fatma Rashid","email":"dummy.fatma@example.test","role":"Team Leader"},
+    {"username":"DUMMY.USER.HAMAD-SAEED","password":"DummyPass!2026","displayName":"DUMMY Hamad Saeed","email":"dummy.hamad@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.MARYAM-HILAL","password":"DummyPass!2026","displayName":"DUMMY Maryam Hilal","email":"dummy.maryam@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.ALI-MANSOOR","password":"DummyPass!2026","displayName":"DUMMY Ali Mansoor","email":"dummy.ali@example.test","role":"Team Leader"},
+    {"username":"DUMMY.USER.NOOR-AHMED","password":"DummyPass!2026","displayName":"DUMMY Noor Ahmed","email":"dummy.noor@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.SALIM-ISSA","password":"DummyPass!2026","displayName":"DUMMY Salim Issa","email":"dummy.salim@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.MAHA-KHALFAN","password":"DummyPass!2026","displayName":"DUMMY Maha Khalfan","email":"dummy.maha@example.test","role":"Team Leader"},
+    {"username":"DUMMY.USER.ABDULLAH-HAMED","password":"DummyPass!2026","displayName":"DUMMY Abdullah Hamed","email":"dummy.abdullah@example.test","role":"Employee"},
+    {"username":"DUMMY.USER.HUDA-SULTAN","password":"DummyPass!2026","displayName":"DUMMY Huda Sultan","email":"dummy.huda@example.test","role":"Employee"}
   ],
   "groups": [
-    {"name":"Cyber Security","description":"SOC, incident response and security operations","manager":"sara.ali","members":["sara.ali","omar.hassan","layla.said"]},
-    {"name":"Network Operations","description":"Network infrastructure and connectivity","manager":"khalid.nasser","members":["khalid.nasser","reem.salem","yousef.amin"]},
-    {"name":"Systems Administration","description":"Windows and Linux server administration","manager":"fatma.rashid","members":["fatma.rashid","hamad.saeed","maryam.hilal"]},
-    {"name":"Help Desk","description":"End-user support and service requests","manager":"ali.mansoor","members":["ali.mansoor","noor.ahmed","salim.issa"]},
-    {"name":"Development","description":"Internal applications and automation","manager":"maha.khalfan","members":["maha.khalfan","abdullah.hamed","huda.sultan"]}
+    {"name":"DUMMY.GROUP.CYBER-SECURITY","description":"DUMMY SOC, incident response and security operations","manager":"DUMMY.USER.SARA-ALI","members":["DUMMY.USER.SARA-ALI","DUMMY.USER.OMAR-HASSAN","DUMMY.USER.LAYLA-SAID"]},
+    {"name":"DUMMY.GROUP.NETWORK-OPERATIONS","description":"DUMMY network infrastructure and connectivity","manager":"DUMMY.USER.KHALID-NASSER","members":["DUMMY.USER.KHALID-NASSER","DUMMY.USER.REEM-SALEM","DUMMY.USER.YOUSEF-AMIN"]},
+    {"name":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","description":"DUMMY Windows and Linux server administration","manager":"DUMMY.USER.FATMA-RASHID","members":["DUMMY.USER.FATMA-RASHID","DUMMY.USER.HAMAD-SAEED","DUMMY.USER.MARYAM-HILAL"]},
+    {"name":"DUMMY.GROUP.HELP-DESK","description":"DUMMY end-user support and service requests","manager":"DUMMY.USER.ALI-MANSOOR","members":["DUMMY.USER.ALI-MANSOOR","DUMMY.USER.NOOR-AHMED","DUMMY.USER.SALIM-ISSA"]},
+    {"name":"DUMMY.GROUP.DEVELOPMENT","description":"DUMMY internal applications and automation","manager":"DUMMY.USER.MAHA-KHALFAN","members":["DUMMY.USER.MAHA-KHALFAN","DUMMY.USER.ABDULLAH-HAMED","DUMMY.USER.HUDA-SULTAN"]}
   ]
 }
