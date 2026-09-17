@@ -1,49 +1,37 @@
 {
-  "groups": [
-    {"name":"Cyber Security","description":"SOC, incident response and security operations"},
-    {"name":"Network Operations","description":"Network infrastructure and connectivity"},
-    {"name":"Systems Administration","description":"Windows and Linux server administration"},
-    {"name":"Help Desk","description":"End-user support and service requests"},
-    {"name":"Development","description":"Internal applications and automation"}
-  ],
   "projects": [
-    {"name":"SOC Modernization","group":"Cyber Security","description":"Improve SOC monitoring and detection capabilities"},
-    {"name":"Firewall Refresh","group":"Network Operations","description":"Replace legacy perimeter firewalls"},
-    {"name":"Core Network Upgrade","group":"Network Operations","description":"Upgrade core switching infrastructure"},
-    {"name":"Windows Server Hardening","group":"Systems Administration","description":"Apply hardened Windows Server baseline"},
-    {"name":"Linux Automation","group":"Systems Administration","description":"Automate repetitive Linux administration"},
-    {"name":"Service Desk Improvement","group":"Help Desk","description":"Improve support workflow and response time"},
-    {"name":"Asset Management","group":"Development","description":"Build internal asset management tooling"},
-    {"name":"Internal Automation","group":"Development","description":"Automate internal operational processes"}
+    {"name":"DUMMY.PROJECT.SOC-MODERNIZATION","group":"DUMMY.GROUP.CYBER-SECURITY","description":"DUMMY SOC monitoring and detection project"},
+    {"name":"DUMMY.PROJECT.FIREWALL-REFRESH","group":"DUMMY.GROUP.NETWORK-OPERATIONS","description":"DUMMY perimeter firewall replacement"},
+    {"name":"DUMMY.PROJECT.CORE-NETWORK-UPGRADE","group":"DUMMY.GROUP.NETWORK-OPERATIONS","description":"DUMMY core switching upgrade"},
+    {"name":"DUMMY.PROJECT.WINDOWS-HARDENING","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","description":"DUMMY Windows Server hardening baseline"},
+    {"name":"DUMMY.PROJECT.LINUX-AUTOMATION","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","description":"DUMMY Linux administration automation"},
+    {"name":"DUMMY.PROJECT.SERVICE-DESK","group":"DUMMY.GROUP.HELP-DESK","description":"DUMMY support workflow improvement"},
+    {"name":"DUMMY.PROJECT.ASSET-MANAGEMENT","group":"DUMMY.GROUP.DEVELOPMENT","description":"DUMMY internal asset management tooling"}
   ],
   "tasks": [
-    {"title":"Review critical SIEM alerts","description":"Review unresolved high-severity alerts from the SIEM.","group":"Cyber Security","project":"SOC Modernization","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-18T12:00:00","comment":"Initial alert triage has started."},
-    {"title":"Tune brute-force detection rule","description":"Reduce false positives while retaining useful detection coverage.","group":"Cyber Security","project":"SOC Modernization","priority":"High","status":"New","expectedFinish":"2026-09-21T15:00:00"},
-    {"title":"Investigate suspicious DNS traffic","description":"Analyze unusual outbound DNS queries identified by monitoring.","group":"Cyber Security","project":"SOC Modernization","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-16T10:00:00","comment":"PCAP review is currently underway."},
-    {"title":"Document incident response workflow","description":"Create an updated incident response workflow for analysts.","group":"Cyber Security","project":"SOC Modernization","priority":"Normal","status":"Finished","expectedFinish":"2026-09-14T12:00:00"},
-    {"title":"Validate IOC feed ingestion","description":"Confirm indicator feeds are ingested without malformed records.","group":"Cyber Security","project":"SOC Modernization","priority":"High","status":"Finished","expectedFinish":"2026-09-15T14:00:00"},
-    {"title":"Prepare firewall migration plan","description":"Document migration sequence and rollback procedures.","group":"Network Operations","project":"Firewall Refresh","priority":"High","status":"In Progress","expectedFinish":"2026-09-19T16:00:00"},
-    {"title":"Audit existing firewall rules","description":"Identify obsolete and duplicate firewall rules.","group":"Network Operations","project":"Firewall Refresh","priority":"High","status":"In Progress","expectedFinish":"2026-09-15T16:00:00","comment":"Several obsolete rules have already been identified."},
-    {"title":"Backup firewall configuration","description":"Export and validate configuration backup before migration.","group":"Network Operations","project":"Firewall Refresh","priority":"Critical","status":"Finished","expectedFinish":"2026-09-13T12:00:00"},
-    {"title":"Configure new core switch","description":"Apply baseline VLAN and routing configuration.","group":"Network Operations","project":"Core Network Upgrade","priority":"Critical","status":"New","expectedFinish":"2026-09-22T10:00:00"},
-    {"title":"Test switch redundancy","description":"Validate redundant uplinks and failover behavior.","group":"Network Operations","project":"Core Network Upgrade","priority":"High","status":"New","expectedFinish":"2026-09-23T13:00:00"},
-    {"title":"Update network diagrams","description":"Update logical and physical network diagrams.","group":"Network Operations","project":"Core Network Upgrade","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-17T09:00:00"},
-    {"title":"Review domain controller baseline","description":"Compare domain controllers against approved security baseline.","group":"Systems Administration","project":"Windows Server Hardening","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-20T12:00:00"},
-    {"title":"Disable obsolete TLS protocols","description":"Remove deprecated TLS protocols from Windows servers.","group":"Systems Administration","project":"Windows Server Hardening","priority":"High","status":"Finished","expectedFinish":"2026-09-12T15:00:00"},
-    {"title":"Review privileged groups","description":"Audit privileged Active Directory group membership.","group":"Systems Administration","project":"Windows Server Hardening","priority":"High","status":"In Progress","expectedFinish":"2026-09-16T12:00:00"},
-    {"title":"Automate Linux patch reporting","description":"Create automation for collecting patch status.","group":"Systems Administration","project":"Linux Automation","priority":"Normal","status":"New","expectedFinish":"2026-09-25T15:00:00"},
-    {"title":"Build server health collection script","description":"Collect CPU, memory, disk and service health information.","group":"Systems Administration","project":"Linux Automation","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-22T15:00:00","comment":"CPU and memory collection is complete."},
-    {"title":"Remove obsolete service accounts","description":"Review and disable unused local service accounts.","group":"Systems Administration","project":"Windows Server Hardening","priority":"High","status":"New","expectedFinish":"2026-09-15T09:00:00"},
-    {"title":"Review unresolved support tickets","description":"Review tickets open longer than five business days.","group":"Help Desk","project":"Service Desk Improvement","priority":"High","status":"In Progress","expectedFinish":"2026-09-18T14:00:00"},
-    {"title":"Create password reset guide","description":"Prepare end-user password reset instructions.","group":"Help Desk","project":"Service Desk Improvement","priority":"Low","status":"Finished","expectedFinish":"2026-09-11T10:00:00"},
-    {"title":"Update support knowledge base","description":"Review outdated troubleshooting articles.","group":"Help Desk","project":"Service Desk Improvement","priority":"Normal","status":"New","expectedFinish":"2026-09-24T12:00:00"},
-    {"title":"Investigate recurring printer issue","description":"Identify cause of repeated print spooler failures.","group":"Help Desk","project":"Service Desk Improvement","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-16T11:00:00","comment":"Issue appears related to an outdated driver."},
-    {"title":"Prepare new employee workstation","description":"Configure workstation, applications and security controls.","group":"Help Desk","project":"Service Desk Improvement","priority":"Normal","status":"Finished","expectedFinish":"2026-09-17T08:00:00"},
-    {"title":"Design asset database schema","description":"Define asset, owner, location and lifecycle entities.","group":"Development","project":"Asset Management","priority":"High","status":"Finished","expectedFinish":"2026-09-14T16:00:00"},
-    {"title":"Build asset registration form","description":"Create the initial asset registration interface.","group":"Development","project":"Asset Management","priority":"High","status":"In Progress","expectedFinish":"2026-09-21T16:00:00"},
-    {"title":"Implement asset search","description":"Add search by hostname, serial number and owner.","group":"Development","project":"Asset Management","priority":"Normal","status":"New","expectedFinish":"2026-09-26T12:00:00"},
-    {"title":"Create automated audit report","description":"Generate an internal operational audit report.","group":"Development","project":"Internal Automation","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-16T16:00:00"},
-    {"title":"Build notification prototype","description":"Prototype application notification handling.","group":"Development","project":"Internal Automation","priority":"Normal","status":"New","expectedFinish":"2026-09-28T12:00:00"},
-    {"title":"Document automation framework","description":"Document architecture and coding conventions.","group":"Development","project":"Internal Automation","priority":"Low","status":"Finished","expectedFinish":"2026-09-10T12:00:00"}
+    {"title":"DUMMY.TASK.REVIEW-SIEM-ALERTS","group":"DUMMY.GROUP.CYBER-SECURITY","project":"DUMMY.PROJECT.SOC-MODERNIZATION","assignee":"DUMMY.USER.SARA-ALI","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-20T12:00:00","comment":"DUMMY initial alert triage started"},
+    {"title":"DUMMY.TASK.TUNE-BRUTE-FORCE-RULE","group":"DUMMY.GROUP.CYBER-SECURITY","project":"DUMMY.PROJECT.SOC-MODERNIZATION","assignee":"DUMMY.USER.OMAR-HASSAN","priority":"High","status":"New","expectedFinish":"2026-09-23T15:00:00"},
+    {"title":"DUMMY.TASK.INVESTIGATE-DNS-TRAFFIC","group":"DUMMY.GROUP.CYBER-SECURITY","project":"DUMMY.PROJECT.SOC-MODERNIZATION","assignee":"DUMMY.USER.LAYLA-SAID","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-15T10:00:00"},
+    {"title":"DUMMY.TASK.INCIDENT-RESPONSE-WORKFLOW","group":"DUMMY.GROUP.CYBER-SECURITY","project":"DUMMY.PROJECT.SOC-MODERNIZATION","assignee":"DUMMY.USER.SARA-ALI","priority":"Normal","status":"Finished","expectedFinish":"2026-09-14T12:00:00"},
+
+    {"title":"DUMMY.TASK.FIREWALL-CONFIG","group":"DUMMY.GROUP.NETWORK-OPERATIONS","project":"DUMMY.PROJECT.FIREWALL-REFRESH","assignee":"DUMMY.USER.KHALID-NASSER","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-21T16:00:00"},
+    {"title":"DUMMY.TASK.AUDIT-FIREWALL-RULES","group":"DUMMY.GROUP.NETWORK-OPERATIONS","project":"DUMMY.PROJECT.FIREWALL-REFRESH","assignee":"DUMMY.USER.REEM-SALEM","priority":"High","status":"In Progress","expectedFinish":"2026-09-14T16:00:00"},
+    {"title":"DUMMY.TASK.BACKUP-FIREWALL","group":"DUMMY.GROUP.NETWORK-OPERATIONS","project":"DUMMY.PROJECT.FIREWALL-REFRESH","assignee":"DUMMY.USER.YOUSEF-AMIN","priority":"High","status":"Finished","expectedFinish":"2026-09-13T12:00:00"},
+    {"title":"DUMMY.TASK.CONFIGURE-CORE-SWITCH","group":"DUMMY.GROUP.NETWORK-OPERATIONS","project":"DUMMY.PROJECT.CORE-NETWORK-UPGRADE","assignee":"DUMMY.USER.KHALID-NASSER","priority":"Critical","status":"New","expectedFinish":"2026-09-25T10:00:00"},
+
+    {"title":"DUMMY.TASK.REVIEW-DC-BASELINE","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","project":"DUMMY.PROJECT.WINDOWS-HARDENING","assignee":"DUMMY.USER.FATMA-RASHID","priority":"Critical","status":"In Progress","expectedFinish":"2026-09-22T12:00:00"},
+    {"title":"DUMMY.TASK.DISABLE-OLD-TLS","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","project":"DUMMY.PROJECT.WINDOWS-HARDENING","assignee":"DUMMY.USER.HAMAD-SAEED","priority":"High","status":"Finished","expectedFinish":"2026-09-12T15:00:00"},
+    {"title":"DUMMY.TASK.REVIEW-PRIVILEGED-GROUPS","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","project":"DUMMY.PROJECT.WINDOWS-HARDENING","assignee":"DUMMY.USER.MARYAM-HILAL","priority":"High","status":"In Progress","expectedFinish":"2026-09-15T12:00:00"},
+    {"title":"DUMMY.TASK.LINUX-PATCH-REPORT","group":"DUMMY.GROUP.SYSTEMS-ADMINISTRATION","project":"DUMMY.PROJECT.LINUX-AUTOMATION","assignee":"DUMMY.USER.HAMAD-SAEED","priority":"Normal","status":"New","expectedFinish":"2026-09-27T15:00:00"},
+
+    {"title":"DUMMY.TASK.REVIEW-SUPPORT-TICKETS","group":"DUMMY.GROUP.HELP-DESK","project":"DUMMY.PROJECT.SERVICE-DESK","assignee":"DUMMY.USER.ALI-MANSOOR","priority":"High","status":"In Progress","expectedFinish":"2026-09-21T14:00:00"},
+    {"title":"DUMMY.TASK.PASSWORD-RESET-GUIDE","group":"DUMMY.GROUP.HELP-DESK","project":"DUMMY.PROJECT.SERVICE-DESK","assignee":"DUMMY.USER.NOOR-AHMED","priority":"Low","status":"Finished","expectedFinish":"2026-09-11T10:00:00"},
+    {"title":"DUMMY.TASK.UPDATE-KNOWLEDGE-BASE","group":"DUMMY.GROUP.HELP-DESK","project":"DUMMY.PROJECT.SERVICE-DESK","assignee":"DUMMY.USER.SALIM-ISSA","priority":"Normal","status":"New","expectedFinish":"2026-09-26T12:00:00"},
+    {"title":"DUMMY.TASK.PRINTER-ISSUE","group":"DUMMY.GROUP.HELP-DESK","project":"DUMMY.PROJECT.SERVICE-DESK","assignee":"DUMMY.USER.NOOR-AHMED","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-15T11:00:00"},
+
+    {"title":"DUMMY.TASK.ASSET-DB-SCHEMA","group":"DUMMY.GROUP.DEVELOPMENT","project":"DUMMY.PROJECT.ASSET-MANAGEMENT","assignee":"DUMMY.USER.MAHA-KHALFAN","priority":"High","status":"Finished","expectedFinish":"2026-09-14T16:00:00"},
+    {"title":"DUMMY.TASK.ASSET-REGISTRATION-FORM","group":"DUMMY.GROUP.DEVELOPMENT","project":"DUMMY.PROJECT.ASSET-MANAGEMENT","assignee":"DUMMY.USER.ABDULLAH-HAMED","priority":"High","status":"In Progress","expectedFinish":"2026-09-23T16:00:00"},
+    {"title":"DUMMY.TASK.ASSET-SEARCH","group":"DUMMY.GROUP.DEVELOPMENT","project":"DUMMY.PROJECT.ASSET-MANAGEMENT","assignee":"DUMMY.USER.HUDA-SULTAN","priority":"Normal","status":"New","expectedFinish":"2026-09-28T12:00:00"},
+    {"title":"DUMMY.TASK.AUTOMATED-AUDIT-REPORT","group":"DUMMY.GROUP.DEVELOPMENT","project":"DUMMY.PROJECT.ASSET-MANAGEMENT","assignee":"DUMMY.USER.ABDULLAH-HAMED","priority":"Normal","status":"In Progress","expectedFinish":"2026-09-15T16:00:00"}
   ]
 }
