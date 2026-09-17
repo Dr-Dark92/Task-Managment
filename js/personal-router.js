@@ -1,0 +1,1 @@
+(()=>{const nav=document.querySelector('.nav');if(nav)nav.addEventListener('click',e=>{const b=e.target.closest('[data-page="my-workspace"]');if(!b)return;e.preventDefault();e.stopImmediatePropagation();TM.PersonalWorkspace.render()},true)})();
