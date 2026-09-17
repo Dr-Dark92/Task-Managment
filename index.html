@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Task Management</title>
+  <style>
+    :root{--primary:#2563eb;--bg:#0b1120;--surface:#111827;--border:#334155;--text:#f8fafc;--muted:#94a3b8;--radius:16px}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#1e293b,var(--bg) 55%);color:var(--text);display:grid;place-items:center;padding:24px}.card{width:min(520px,100%);background:rgba(17,24,39,.95);border:1px solid var(--border);border-radius:var(--radius);padding:36px;box-shadow:0 25px 80px rgba(0,0,0,.35)}.logo{width:52px;height:52px;border-radius:14px;background:var(--primary);display:grid;place-items:center;font-weight:800}h1{margin:22px 0 8px}.muted{color:var(--muted);line-height:1.55}.status{margin-top:26px;padding:14px;border:1px solid var(--border);border-radius:12px}.ok{color:#86efac}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo">TM</div>
+    <h1>Task Management</h1>
+    <p class="muted">Standalone HTML application foundation. No service, installation, Python or Node runtime required.</p>
+    <div class="status"><strong class="ok">✓ Standalone engine loaded</strong><br><span class="muted">Next: local database, first-admin setup, authentication and application shell.</span></div>
+  </main>
+  <script>
+    document.documentElement.dataset.engine = 'standalone';
+    console.info('Task Management standalone engine loaded');
+  </script>
+</body>
+</html>
