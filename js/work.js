@@ -28,9 +28,10 @@ TM.Work=(()=>{
     await TM.DB.audit('TASK_CREATED','task',id,{code,groupId:task.groupId,projectId:task.projectId});return id;
   }
   async function changeTaskStatus(taskId,status,actor){
-    if(!['New','In Progress','Finished'].includes(status))throw Error('Invalid task status.');const t=await TM.DB.get('tasks',Number(taskId));if(!t)throw Error('Task not found.');const from=t.status;t.status=status;t.updatedAt=now();t.finishedAt=status==='Finished'?now():null;await TM.DB.put('tasks',t);await addTaskEvent(t.id,actor?.id,'STATUS_CHANGED',`${from} → ${status}`,{from,to:status});await TM.DB.audit('TASK_STATUS_CHANGED','task',t.id,{from,to:status});return t;
+    if(!['New','In Progress','Finished'].includes(status))throw Error('Invalid task status.');const t=await TM.DB.get('tasks',Number(taskId));if(!t)throw Error('Task not found.');const from=t.status;if(from===status)return t;t.status=status;t.updatedAt=now();t.finishedAt=status==='Finished'?now():null;await TM.DB.put('tasks',t);await addTaskEvent(t.id,actor?.id,'STATUS_CHANGED',`${from} → ${status}`,{from,to:status});await TM.DB.audit('TASK_STATUS_CHANGED','task',t.id,{from,to:status});return t;
   }
-  async function comment(taskId,text,actor){if(!clean(text))throw Error('Comment cannot be empty.');return addTaskEvent(taskId,actor?.id,'COMMENT',text)}
+  async function comment(taskId,text,actor,metadata={}){if(!clean(text))throw Error('Comment cannot be empty.');return addTaskEvent(taskId,actor?.id,'COMMENT',text,metadata)}
+  async function attach(taskId,file,actor){if(!file)throw Error('Select a file first.');return addTaskEvent(taskId,actor?.id,'ATTACHMENT',file.name,{name:file.name,size:file.size,type:file.type||'application/octet-stream',lastModified:file.lastModified||null})}
   async function dashboard(){const tasks=await TM.DB.getAll('tasks'),groups=await TM.DB.getAll('groups');const total={New:0,'In Progress':0,Late:0,Finished:0};for(const t of tasks)total[taskBucket(t)]++;const teams=groups.map(g=>{const own=tasks.filter(t=>t.groupId===g.id),late=own.filter(isLate).length,finished=own.filter(t=>t.status==='Finished').length,open=own.filter(t=>t.status!=='Finished'&&!isLate(t)).length;return{groupId:g.id,name:g.name,open,finished,late,total:own.length}});return{total,teams,count:tasks.length}}
-  return{createProject,createTask,changeTaskStatus,comment,addTaskEvent,addProjectEvent,taskBucket,isLate,dashboard};
+  return{createProject,createTask,changeTaskStatus,comment,attach,addTaskEvent,addProjectEvent,taskBucket,isLate,dashboard};
 })();
