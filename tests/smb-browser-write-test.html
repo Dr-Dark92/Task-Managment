@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SMB Browser Write Test</title>
+<style>
+body{font:16px system-ui;max-width:820px;margin:40px auto;padding:0 20px;background:#111827;color:#e5e7eb}
+.card{background:#1f2937;border:1px solid #374151;border-radius:14px;padding:22px;margin:16px 0}
+button{padding:11px 16px;border:0;border-radius:9px;cursor:pointer;margin:5px}button.primary{background:#2563eb;color:white}
+pre{white-space:pre-wrap;background:#0b1220;padding:14px;border-radius:10px}.ok{color:#86efac}.bad{color:#fca5a5}.muted{color:#9ca3af}
+</style></head><body>
+<h1>Task Management — SMB Browser Capability Test</h1>
+<p class="muted">This does not install anything and does not modify the application database. Select the shared Task Management folder when asked.</p>
+<div class="card">
+<button class="primary" id="select">1. Select shared folder</button>
+<button id="write" disabled>2. Write test file</button>
+<button id="read" disabled>3. Read it back</button>
+<button id="delete" disabled>4. Delete test file</button>
+<pre id="out">Waiting for test…</pre>
+</div>
+<script>
+let dir=null;const out=document.getElementById('out'),name='tm-smb-browser-test-'+Date.now()+'.txt';
+const log=(m,ok=true)=>out.innerHTML+=(out.textContent==='Waiting for test…'?'':'\n')+'<span class="'+(ok?'ok':'bad')+'">'+m.replace(/[&<>]/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[x]))+'</span>';
+document.getElementById('select').onclick=async()=>{
+ out.textContent='';
+ if(!('showDirectoryPicker' in window)){log('FAIL: showDirectoryPicker is unavailable in this browser/context.',false);log('Context: '+location.href,false);return}
+ try{dir=await window.showDirectoryPicker({mode:'readwrite'});log('PASS: directory selected: '+dir.name);['write','read','delete'].forEach(x=>document.getElementById(x).disabled=false)}
+ catch(e){log('FAIL selecting directory: '+e.name+' — '+e.message,false)}
+};
+document.getElementById('write').onclick=async()=>{try{const h=await dir.getFileHandle(name,{create:true}),w=await h.createWritable();await w.write('Task Management SMB test\n'+new Date().toISOString());await w.close();log('PASS: wrote '+name)}catch(e){log('FAIL writing: '+e.name+' — '+e.message,false)}};
+document.getElementById('read').onclick=async()=>{try{const h=await dir.getFileHandle(name),f=await h.getFile(),t=await f.text();log('PASS: read back '+f.size+' bytes: '+t.replace(/\n/g,' | '))}catch(e){log('FAIL reading: '+e.name+' — '+e.message,false)}};
+document.getElementById('delete').onclick=async()=>{try{await dir.removeEntry(name);log('PASS: deleted '+name)}catch(e){log('FAIL deleting: '+e.name+' — '+e.message,false)}};
+</script></body></html>
