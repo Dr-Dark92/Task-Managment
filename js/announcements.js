@@ -2,7 +2,10 @@
 window.TM=window.TM||{};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validColor=c=>/^#[0-9a-f]{6}$/i.test(c||'')?c:'#f8fafc';
-let expiryTimer=null;\nconst SPEED_KEY='announcementMarqueeSeconds';\nfunction speed(){const n=Number(localStorage.getItem(SPEED_KEY)||28);return Math.min(120,Math.max(8,Number.isFinite(n)?n:28))}\nfunction setSpeed(v){localStorage.setItem(SPEED_KEY,String(Math.min(120,Math.max(8,Number(v)||28))));refreshMarquee()}
+let expiryTimer=null;
+const SPEED_KEY='announcementMarqueeSeconds';
+function speed(){const n=Number(localStorage.getItem(SPEED_KEY)||28);return Math.min(120,Math.max(8,Number.isFinite(n)?n:28))}
+function setSpeed(v){localStorage.setItem(SPEED_KEY,String(Math.min(120,Math.max(8,Number(v)||28))));refreshMarquee()}
 function active(a,now=Date.now()){if(a.enabled===false)return false;const start=a.startAt?new Date(a.startAt).getTime():0,end=a.endAt?new Date(a.endAt).getTime():Infinity;return now>=start&&now<end}
 async function list(){return (await TM.DB.getAll('announcements')).sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''))}
 async function create(data,actor){const text=String(data.text||'').trim();if(!text)throw Error('Announcement text is required.');const startAt=data.startAt?new Date(data.startAt).toISOString():new Date().toISOString(),endAt=data.endAt?new Date(data.endAt).toISOString():'';if(endAt&&new Date(endAt)<=new Date(startAt))throw Error('End time must be after start time.');const row={text,startAt,endAt,bold:!!data.bold,italic:!!data.italic,underline:!!data.underline,color:validColor(data.color),enabled:true,createdAt:new Date().toISOString(),createdBy:actor?.id||null};const id=await TM.DB.add('announcements',row);await TM.DB.audit('ANNOUNCEMENT_CREATED','announcement',id,{startAt,endAt});await refreshMarquee();return id}
