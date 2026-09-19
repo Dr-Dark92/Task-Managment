@@ -30,3 +30,11 @@
 .overall-status-card .pie-wrap{min-height:0;padding:14px 4px 6px;gap:34px}
 .overall-status-card .tm-pie{width:190px}
 .team-section{margin-top:18px}
+
+/* Dashboard local clock */
+.dashboard-clock{margin-left:auto;min-width:245px;padding:18px 22px;border-left:1px solid var(--border);display:grid;align-content:center;justify-items:start;gap:4px}
+.dashboard-clock-label{font-size:.68rem;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+.dashboard-clock strong{font-size:2.25rem;line-height:1.1;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.dashboard-clock>span:not(.dashboard-clock-label){font-size:1rem;font-weight:700;color:#cbd5e1}
+.dashboard-clock small{font-size:.82rem;color:var(--muted)}
+@media(max-width:900px){.overall-status-card .pie-wrap{flex-wrap:wrap}.dashboard-clock{width:100%;margin-left:0;border-left:0;border-top:1px solid var(--border);padding:18px 0 4px}}
