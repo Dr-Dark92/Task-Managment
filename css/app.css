@@ -23,3 +23,10 @@
 .team-value{font-size:.75rem;font-weight:800}
 @media(max-width:1350px){.dashboard-overview{grid-template-columns:1fr}.team-card-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}}
 @media(max-width:760px){.team-card-grid{grid-template-columns:1fr}}
+
+/* Dashboard compact overall-status panel after team-card split */
+.dashboard-overview{display:block}
+.overall-status-card{min-height:0;padding:22px 26px}
+.overall-status-card .pie-wrap{min-height:0;padding:14px 4px 6px;gap:34px}
+.overall-status-card .tm-pie{width:190px}
+.team-section{margin-top:18px}
