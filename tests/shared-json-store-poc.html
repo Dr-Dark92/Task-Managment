@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shared JSON Store POC-01</title>
+<style>
+:root{color-scheme:dark}body{font:14px system-ui;margin:28px auto;max-width:1050px;padding:0 18px;background:#0f172a;color:#e2e8f0}
+h1,h2{margin:.3em 0}.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;margin:14px 0}
+button,input,select,textarea{font:inherit}button{padding:9px 13px;margin:4px;border:0;border-radius:8px;cursor:pointer}button.primary{background:#2563eb;color:#fff}
+input,select,textarea{background:#0f172a;color:#fff;border:1px solid #475569;border-radius:7px;padding:8px}textarea{width:95%;min-height:65px}
+pre{white-space:pre-wrap;background:#020617;padding:12px;border-radius:8px;max-height:260px;overflow:auto}.ok{color:#86efac}.bad{color:#fca5a5}.warn{color:#fde68a}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:750px){.grid{grid-template-columns:1fr}}
+.small{color:#94a3b8}.pill{display:inline-block;padding:3px 8px;border-radius:99px;background:#334155;margin:2px}
+</style></head><body>
+<h1>Shared JSON Store POC-01</h1>
+<p class="small">Static browser test for Windows/SMB production architecture. No API or service.</p>
+
+<div class="card">
+<h2>1. Workspace</h2>
+<button class="primary" id="pick">Select workspace</button><button id="restore">Restore saved handle</button><button id="clear">Clear saved handle</button>
+<div id="ws">No workspace connected.</div>
+</div>
+
+<div class="grid">
+<div class="card"><h2>2. Test task</h2>
+<button id="init" disabled>Create / load TASK-TEST-001</button>
+<p>Status: <b id="status">—</b></p><p>Events: <b id="eventCount">0</b> &nbsp; Comments: <b id="commentCount">0</b></p>
+<button id="sync" disabled>Sync / reconstruct</button>
+</div>
+<div class="card"><h2>Browser identity</h2>
+<label>Name <input id="actor" value=""></label>
+<p class="small">Use different names in Chrome and Edge.</p>
+<div>Client ID: <span id="client"></span></div>
+</div>
+</div>
+
+<div class="grid">
+<div class="card"><h2>3. Add comment</h2><textarea id="comment" placeholder="Comment from this browser"></textarea><br><button id="addComment" disabled>Add immutable comment block</button></div>
+<div class="card"><h2>4. Change status</h2><select id="newStatus"><option>New</option><option>In Progress</option><option>Blocked</option><option>Pending Review</option><option>Finished</option><option>Cancelled</option></select><br><button id="addStatus" disabled>Add immutable status event</button>
+<p class="small">The event records the status this browser last observed as its base value.</p></div>
+</div>
+
+<div class="card"><h2>5. Reconstructed state / conflicts</h2><pre id="state">Not loaded.</pre></div>
+<div class="card"><h2>Test log</h2><pre id="log"></pre></div>
+
+<script>
+const DB='tm-shared-poc',STORE='handles',KEY='workspace';
+let root=null,taskDir=null,lastObservedStatus=null;
+const clientId=localStorage.tmPocClient||(localStorage.tmPocClient=crypto.randomUUID());
+client.textContent=clientId; actor.value=localStorage.tmPocActor||('Browser-'+clientId.slice(0,6));
+actor.onchange=()=>localStorage.tmPocActor=actor.value;
+function log(m,t='ok'){const s=document.createElement('div');s.className=t;s.textContent=new Date().toLocaleTimeString()+'  '+m;document.querySelector('#log').prepend(s)}
+function id(prefix){return prefix+'-'+crypto.randomUUID()}
+function db(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function saveHandle(h){const d=await db();return new Promise((res,rej)=>{const t=d.transaction(STORE,'readwrite');t.objectStore(STORE).put(h,KEY);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function getHandle(){const d=await db();return new Promise((res,rej)=>{const r=d.transaction(STORE).objectStore(STORE).get(KEY);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function clearHandle(){const d=await db();return new Promise((res,rej)=>{const t=d.transaction(STORE,'readwrite');t.objectStore(STORE).delete(KEY);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function permission(h){let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted')p=await h.requestPermission({mode:'readwrite'});return p}
+async function connect(h){if(await permission(h)!=='granted')throw new Error('Read/write permission not granted');root=h;ws.textContent='Connected: '+h.name;init.disabled=false;await saveHandle(h);log('Workspace connected: '+h.name)}
+pick.onclick=async()=>{try{await connect(await showDirectoryPicker({mode:'readwrite'}))}catch(e){log(e.name+': '+e.message,'bad')}}
+restore.onclick=async()=>{try{const h=await getHandle();if(!h)throw new Error('No saved handle');await connect(h)}catch(e){log('Restore: '+e.message,'warn')}}
+clear.onclick=async()=>{await clearHandle();root=taskDir=null;ws.textContent='Saved handle cleared.';log('Saved workspace handle cleared','warn')}
+async function sub(parent,name){return parent.getDirectoryHandle(name,{create:true})}
+async function writeJson(dir,name,obj){const h=await dir.getFileHandle(name,{create:true});const w=await h.createWritable();await w.write(JSON.stringify(obj,null,2));await w.close()}
+async function readJsonFiles(dir){const a=[];for await(const [name,h] of dir.entries()){if(h.kind!=='file'||!name.endsWith('.json'))continue;try{const f=await h.getFile();a.push({name,data:JSON.parse(await f.text())})}catch(e){a.push({name,error:e.message})}}return a}
+async function setup(){const data=await sub(root,'data'),tasks=await sub(data,'Tasks');taskDir=await sub(tasks,'TASK-TEST-001');await sub(taskDir,'Events');await sub(taskDir,'Comments');await sub(taskDir,'Checklist');await sub(taskDir,'Attachments');
+try{await taskDir.getFileHandle('task.json')}catch{await writeJson(taskDir,'task.json',{id:'TASK-TEST-001',title:'Shared JSON POC Task',createdAt:new Date().toISOString(),createdBy:actor.value})}
+['sync','addComment','addStatus'].forEach(x=>document.getElementById(x).disabled=false);log('TASK-TEST-001 structure ready');await reconstruct()}
+init.onclick=()=>setup().catch(e=>log(e.message,'bad'));sync.onclick=()=>reconstruct().catch(e=>log(e.message,'bad'));
+async function reconstruct(){
+ if(!taskDir)await setup();
+ const ev=await readJsonFiles(await sub(taskDir,'Events')),cm=await readJsonFiles(await sub(taskDir,'Comments'));
+ const validEv=ev.filter(x=>!x.error).map(x=>x.data).sort((a,b)=>(a.timestamp||'').localeCompare(b.timestamp||'')||a.eventId.localeCompare(b.eventId));
+ let current='New',conflicts=[];
+ const groups={};
+ for(const e of validEv){if(e.type==='STATUS_CHANGED'){const k=e.baseStatus||'UNKNOWN';(groups[k]??=[]).push(e);current=e.to}}
+ for(const [base,items] of Object.entries(groups)){const targets=[...new Set(items.map(x=>x.to))];if(items.length>1&&targets.length>1)conflicts.push({baseStatus:base,events:items.map(x=>({eventId:x.eventId,actor:x.actor,to:x.to,timestamp:x.timestamp}))})}
+ lastObservedStatus=current;status.textContent=current;eventCount.textContent=ev.length;commentCount.textContent=cm.length;
+ state.textContent=JSON.stringify({taskId:'TASK-TEST-001',currentStatus:current,events:validEv,comments:cm.filter(x=>!x.error).map(x=>x.data),conflicts,malformed:[...ev,...cm].filter(x=>x.error)},null,2);
+ log('Synchronized: '+ev.length+' events, '+cm.length+' comments'+(conflicts.length?' — CONFLICT DETECTED':''));
+}
+addComment.onclick=async()=>{try{const text=comment.value.trim();if(!text)throw new Error('Enter a comment');const d=await sub(taskDir,'Comments'),eid=id('CMT');await writeJson(d,eid+'.json',{commentId:eid,actor:actor.value,clientId,timestamp:new Date().toISOString(),text});comment.value='';log('Comment block written: '+eid);await reconstruct()}catch(e){log(e.message,'bad')}};
+addStatus.onclick=async()=>{try{const d=await sub(taskDir,'Events'),eid=id('EVT'),to=newStatus.value;await writeJson(d,eid+'.json',{eventId:eid,type:'STATUS_CHANGED',actor:actor.value,clientId,timestamp:new Date().toISOString(),baseStatus:lastObservedStatus||'New',to});log('Status event written: '+eid+' ('+(lastObservedStatus||'New')+' -> '+to+')');await reconstruct()}catch(e){log(e.message,'bad')}};
+</script></body></html>
