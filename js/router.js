@@ -17,7 +17,7 @@
  }
  const timer=setInterval(bootstrap,100);
  setTimeout(()=>clearInterval(timer),15000);
- window.addEventListener('focus',()=>{if(appVisible()){normalizeNav();if(window.TM?.Stage03)route(document.querySelector('.nav button.active')?.dataset.page||'dashboard')}});
+ window.addEventListener('focus',()=>{if(appVisible())normalizeNav();});
  bootstrap();
  window.TM=window.TM||{};TM.Router={route,normalizeNav};
 })();
