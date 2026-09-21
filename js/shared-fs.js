@@ -10,7 +10,7 @@ TM.SharedFS=(()=>{
  async function clearSavedHandle(){const d=await openDB();return new Promise((res,rej)=>{const t=d.transaction(STORE,'readwrite');t.objectStore(STORE).delete(KEY);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)})}
  async function permission(h,request=false){if(!h)return'denied';let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted'&&request)p=await h.requestPermission({mode:'readwrite'});return p}
  async function use(h,request=true){if(!h)throw Error('Workspace handle required');if(await permission(h,request)!=='granted')throw Error('Read/write permission not granted');root=h;await saveHandle(h);return h}
- async function connect(){if(!('showDirectoryPicker'in window))throw Error('File System Access API is unavailable in this browser/context');return use(await showDirectoryPicker({mode:'readwrite'}),false)}
+ function supported(){return typeof window.showDirectoryPicker==='function'}\n async function connect(){if(!supported())throw Error('SharedFS unavailable: File System Access directory picker is not exposed in this browser/context');return use(await window.showDirectoryPicker({mode:'readwrite'}),false)}
  async function restore(request=true){const h=await savedHandle();if(!h)return null;try{return await use(h,request)}catch{return null}}
  function current(){return root}
  async function dir(path,create=false){if(!root)throw Error('Shared workspace is not connected');let d=root;for(const part of path){assertName(part);d=await d.getDirectoryHandle(part,{create})}return d}
@@ -29,5 +29,5 @@ TM.SharedFS=(()=>{
   return{workspace:await readJSON(['System','workspace.json']),schema:await readJSON(['System','schema.json'])}
  }
  async function disconnect({forget=false}={}){root=null;if(forget)await clearSavedHandle()}
- return{connect,restore,disconnect,current,permission,savedHandle,clearSavedHandle,assertName,ensureDirectory,exists,readText,readJSON,createJSON,replaceJSON,list,initialize};
+ return{supported,connect,restore,disconnect,current,permission,savedHandle,clearSavedHandle,assertName,ensureDirectory,exists,readText,readJSON,createJSON,replaceJSON,list,initialize};
 })();
