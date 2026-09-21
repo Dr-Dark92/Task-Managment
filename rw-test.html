@@ -1,39 +1,71 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Read Write Delete Test</title>
-<style>body{font:16px system-ui;max-width:760px;margin:40px auto;padding:0 20px}button{padding:10px 16px;margin:5px}pre{padding:16px;background:#eee;white-space:pre-wrap}.pass{color:green}.fail{color:#b00020}</style></head>
+<html><head><meta charset="utf-8"><title>Filesystem R/W/Delete Test</title>
+<style>body{font:16px system-ui;max-width:760px;margin:40px auto;padding:0 20px}button{padding:10px 16px;margin:5px}button:disabled{opacity:.45}pre{padding:16px;background:#eee;white-space:pre-wrap}.pass{color:green}.fail{color:#b00020}</style></head>
 <body>
 <h1>Filesystem Read / Write / Delete Test</h1>
-<p>Choose a folder, then test direct filesystem access. No IndexedDB, OPFS, downloads, API, service, or fallback is used.</p>
+<p>Direct File System Access API test. No IndexedDB, OPFS, download fallback, API, service, or background process.</p>
 <button id="choose">Select Location</button>
-<strong id="location">No location selected</strong><hr>
-<button id="write" disabled>Write</button>
-<button id="read" disabled>Read</button>
-<button id="del" disabled>Delete</button>
-<button id="all" disabled>Run All</button>
+<strong id="selected">No location selected</strong>
+<p id="permission">Permission: not checked</p><hr>
+<button id="write" disabled>Write</button><button id="read" disabled>Read</button><button id="del" disabled>Delete</button><button id="all" disabled>Run All</button>
 <pre id="log"></pre>
 <script>
-let dir=null;const NAME='tm-rw-test.json', log=document.querySelector('#log');
-function say(s,ok){log.innerHTML+=`<span class="${ok===true?'pass':ok===false?'fail':''}">${s}</span>\n`}
-function ready(v){['write','read','del','all'].forEach(x=>document.getElementById(x).disabled=!v)}
-async function choose(){
- log.textContent='';
- if(typeof showDirectoryPicker!=='function'){say('FAIL: showDirectoryPicker is unavailable in this browser/context.',false);say('No fallback attempted.');return}
- try{dir=await showDirectoryPicker({mode:'readwrite'});location.textContent=dir.name;ready(true);say('LOCATION: '+dir.name,true)}
- catch(e){say('SELECT FAIL: '+e.message,false)}
+'use strict';
+let dir=null,lastWritten=null;
+const NAME='jarvis-rw-test.json';
+const log=document.getElementById('log'), selected=document.getElementById('selected'), permission=document.getElementById('permission');
+function say(text,state){const s=document.createElement('span');if(state===true)s.className='pass';if(state===false)s.className='fail';s.textContent=text+'\n';log.appendChild(s)}
+function enable(v){['write','read','del','all'].forEach(id=>document.getElementById(id).disabled=!v)}
+async function selectLocation(){
+ log.textContent='';enable(false);dir=null;
+ if(typeof window.showDirectoryPicker!=='function'){say('SELECT FAIL: showDirectoryPicker is unavailable.',false);return}
+ try{
+   const h=await window.showDirectoryPicker({mode:'readwrite'});
+   const p=await h.requestPermission({mode:'readwrite'});
+   permission.textContent='Permission: '+p;
+   if(p!=='granted')throw new Error('read/write permission was '+p);
+   dir=h;selected.textContent=h.name;enable(true);
+   say('SELECT PASS: '+h.name,true);say('PERMISSION PASS: readwrite granted',true);
+ }catch(e){selected.textContent='No location selected';permission.textContent='Permission: failed';say('SELECT FAIL: '+e.name+': '+e.message,false)}
 }
-async function write(){
- try{const h=await dir.getFileHandle(NAME,{create:true});const w=await h.createWritable();const data=JSON.stringify({test:'Task Management R/W',id:crypto.randomUUID(),writtenAt:new Date().toISOString()},null,2);await w.write(data);await w.close();say('WRITE PASS: '+NAME,true);return data}
- catch(e){say('WRITE FAIL: '+e.message,false);throw e}
+async function writeFile(){
+ if(!dir)throw new Error('select a location first');
+ const payload=JSON.stringify({test:'Jarvis R/W Test',id:crypto.randomUUID(),timestamp:new Date().toISOString()},null,2);
+ try{
+   const file=await dir.getFileHandle(NAME,{create:true});
+   const writer=await file.createWritable();await writer.write(payload);await writer.close();
+   lastWritten=payload;say('WRITE PASS: '+NAME,true);return payload;
+ }catch(e){say('WRITE FAIL: '+e.name+': '+e.message,false);throw e}
 }
-async function read(){
- try{const h=await dir.getFileHandle(NAME);const f=await h.getFile();const text=await f.text();say('READ PASS: '+NAME,true);say(text);return text}
- catch(e){say('READ FAIL: '+e.message,false);throw e}
+async function readFile(){
+ if(!dir)throw new Error('select a location first');
+ try{
+   const file=await dir.getFileHandle(NAME);const disk=await file.getFile();const text=await disk.text();
+   say('READ PASS: '+NAME,true);say(text);return text;
+ }catch(e){say('READ FAIL: '+e.name+': '+e.message,false);throw e}
 }
-async function del(){
+async function deleteFile(){
+ if(!dir)throw new Error('select a location first');
  try{await dir.removeEntry(NAME);say('DELETE PASS: '+NAME,true)}
- catch(e){say('DELETE FAIL: '+e.message,false);throw e}
+ catch(e){say('DELETE FAIL: '+e.name+': '+e.message,false);throw e}
 }
-choose.onclick=choose;write.onclick=()=>write();read.onclick=()=>read();del.onclick=()=>del();
-all.onclick=async()=>{log.textContent='';try{const expected=await write();const actual=await read();if(actual!==expected)throw Error('read-back content does not match write');say('VERIFY PASS: exact content matched',true);await del();say('\nRESULT: READ / WRITE / VERIFY / DELETE PASS',true)}catch(e){say('\nRESULT: FAIL — '+e.message,false)}};
-say('Browser: '+navigator.userAgent);say('Protocol: '+location.protocol);say('Secure context: '+isSecureContext);say('Directory picker: '+typeof showDirectoryPicker);
+document.getElementById('choose').onclick=selectLocation;
+document.getElementById('write').onclick=()=>writeFile().catch(()=>{});
+document.getElementById('read').onclick=()=>readFile().catch(()=>{});
+document.getElementById('del').onclick=()=>deleteFile().catch(()=>{});
+document.getElementById('all').onclick=async()=>{
+ log.textContent='';
+ try{
+   const expected=await writeFile();
+   const actual=await readFile();
+   if(actual!==expected)throw new Error('read-back content differs from written content');
+   say('VERIFY PASS: exact content matched',true);
+   await deleteFile();
+   try{await dir.getFileHandle(NAME);throw new Error('file still exists after delete')}
+   catch(e){if(e.name!=='NotFoundError')throw e}
+   say('DELETE VERIFY PASS: file no longer exists',true);
+   say('\nRESULT: SELECT / PERMISSION / WRITE / READ / VERIFY / DELETE PASS',true);
+ }catch(e){say('\nRESULT: FAIL — '+e.name+': '+e.message,false)}
+};
+say('Browser: '+navigator.userAgent);say('Protocol: '+location.protocol);say('Secure context: '+window.isSecureContext);say('Directory picker: '+typeof window.showDirectoryPicker);
 </script></body></html>
