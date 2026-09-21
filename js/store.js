@@ -3,13 +3,13 @@ TM.Store=(()=>{
  const BASE=['Task-Management-Data'],SCHEMA=1;
  const TYPES={
   user:{prefix:'USR',path:['Identity','Users']},role:{prefix:'ROL',path:['Identity','Roles']},
-  group:{prefix:'GRP',path:['Identity','Groups']},membership:{prefix:'MBR',path:['Identity','Memberships']},session:{prefix:'SES',path:['Identity','Sessions']},
+  group:{prefix:'GRP',path:['Identity','Groups']},membership:{prefix:'MBR',path:['Identity','Memberships']},session:{prefix:'SES',path:['Identity','Sessions']},userEvent:{prefix:'UEV',path:['Identity','UserEvents']},membershipEvent:{prefix:'MEV',path:['Identity','MembershipEvents']},
   event:{prefix:'EVT',path:['_Lab','Events']}
  };
  const uid=t=>TYPES[t].prefix+'-'+crypto.randomUUID(),now=()=>new Date().toISOString();
  async function init(){
   await TM.FileSystem.initializeWorkspace();
-  for(const t of ['Users','Roles','Groups','Memberships','Sessions'])await TM.FileSystem.createDirectory(BASE.concat(['Identity',t]));
+  for(const t of ['Users','Roles','Groups','Memberships','Sessions','UserEvents','MembershipEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Identity',t]));
   await TM.FileSystem.createDirectory(BASE.concat(['_Lab','Events']));
  }
  async function create(type,data){
