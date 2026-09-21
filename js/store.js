@@ -30,7 +30,7 @@ TM.Store=(()=>{
   if(!roles.some(r=>r.systemKey==='auditor'))await create('role',{systemKey:'auditor',name:'Auditor',permissions:['audit.view','kpi.organization']});
   return {workspace:await TM.FileSystem.readJSON(sys,'workspace.json'),schema:await TM.FileSystem.readJSON(sys,'schema.json'),roles:await list('role')};
  }
- async function createUser({username,displayName,passwordHash=null,passwordSalt=null,enabled=true}){if(!username||!displayName)throw Error('username and displayName required');return create('user',{username,displayName,passwordHash,passwordSalt,enabled})}
+ async function createUser({username,displayName,passwordHash=null,passwordSalt=null,passwordIterations=null,passwordAlgorithm=null,enabled=true}){if(!username||!displayName)throw Error('username and displayName required');return create('user',{username,displayName,passwordHash,passwordSalt,passwordIterations,passwordAlgorithm,enabled})}
  async function createGroup({name,description=''}){if(!name)throw Error('group name required');return create('group',{name,description,enabled:true})}
  async function addMembership({userId,groupId=null,roleId}){if(!userId||!roleId)throw Error('userId and roleId required');return create('membership',{userId,groupId,roleId,enabled:true})}
  async function createEvent(client,payload={}){return create('event',{client,payload})}
