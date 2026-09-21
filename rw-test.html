@@ -4,7 +4,7 @@
 <body>
 <h1>Filesystem Read / Write / Delete Test</h1>
 <p>Direct File System Access API test. No IndexedDB, OPFS, download fallback, API, service, or background process.</p>
-<button id="choose">Select Location</button>
+<button id="choose">Select Location</button><button id="restore">Restore Saved Location</button><button id="forget">Forget Saved Location</button>
 <strong id="selected">No location selected</strong>
 <p id="permission">Permission: not checked</p><hr>
 <button id="write" disabled>Write</button><button id="read" disabled>Read</button><button id="del" disabled>Delete</button><button id="all" disabled>Run All</button>
@@ -12,6 +12,11 @@
 <script>
 'use strict';
 let dir=null,lastWritten=null;
+const DB='tm-rw-handle-test',STORE='handles',KEY='workspace';
+function db(){return new Promise((ok,no)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+async function saveHandle(h){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).put(h,KEY);tx.oncomplete=()=>{d.close();ok()};tx.onerror=()=>no(tx.error)})}
+async function loadHandle(){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction(STORE,'readonly'),r=tx.objectStore(STORE).get(KEY);r.onsuccess=()=>{d.close();ok(r.result||null)};r.onerror=()=>no(r.error)})}
+async function forgetHandle(){const d=await db();return new Promise((ok,no)=>{const tx=d.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(KEY);tx.oncomplete=()=>{d.close();ok()};tx.onerror=()=>no(tx.error)})}
 const NAME='jarvis-rw-test.json';
 const log=document.getElementById('log'), selected=document.getElementById('selected'), permission=document.getElementById('permission');
 function say(text,state){const s=document.createElement('span');if(state===true)s.className='pass';if(state===false)s.className='fail';s.textContent=text+'\n';log.appendChild(s)}
@@ -25,7 +30,8 @@ async function selectLocation(){
    permission.textContent='Permission: '+p;
    if(p!=='granted')throw new Error('read/write permission was '+p);
    dir=h;selected.textContent=h.name;enable(true);
-   say('SELECT PASS: '+h.name,true);say('PERMISSION PASS: readwrite granted',true);
+   await saveHandle(h);
+   say('SELECT PASS: '+h.name,true);say('PERMISSION PASS: readwrite granted',true);say('HANDLE SAVE PASS: saved to IndexedDB',true);
  }catch(e){selected.textContent='No location selected';permission.textContent='Permission: failed';say('SELECT FAIL: '+e.name+': '+e.message,false)}
 }
 async function writeFile(){
@@ -49,7 +55,10 @@ async function deleteFile(){
  try{await dir.removeEntry(NAME);say('DELETE PASS: '+NAME,true)}
  catch(e){say('DELETE FAIL: '+e.name+': '+e.message,false);throw e}
 }
+async function restoreLocation(){log.textContent='';enable(false);try{const h=await loadHandle();if(!h)throw new Error('no saved directory handle');let p=await h.queryPermission({mode:'readwrite'});say('RESTORE PASS: handle loaded for '+h.name,true);say('RESTORED PERMISSION: '+p,p==='granted');if(p!=='granted'){say('Permission must be re-granted by a user gesture. Click this button again if prompted.');p=await h.requestPermission({mode:'readwrite'})}if(p!=='granted')throw new Error('read/write permission was '+p);dir=h;selected.textContent=h.name;permission.textContent='Permission: '+p;enable(true);say('RESTORE READY: filesystem operations enabled',true)}catch(e){say('RESTORE FAIL: '+e.name+': '+e.message,false)}}
 document.getElementById('choose').onclick=selectLocation;
+document.getElementById('restore').onclick=restoreLocation;
+document.getElementById('forget').onclick=async()=>{await forgetHandle();dir=null;selected.textContent='No location selected';permission.textContent='Permission: not checked';enable(false);say('FORGET PASS: saved handle removed',true)};
 document.getElementById('write').onclick=()=>writeFile().catch(()=>{});
 document.getElementById('read').onclick=()=>readFile().catch(()=>{});
 document.getElementById('del').onclick=()=>deleteFile().catch(()=>{});
