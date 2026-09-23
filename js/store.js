@@ -28,6 +28,7 @@ TM.Store=(()=>{
   if(!await TM.FileSystem.exists(sys,'schema.json'))await TM.FileSystem.createJSON(sys,'schema.json',{schema:SCHEMA,id:'SCHEMA',type:'schema',version:SCHEMA,createdAt:now()});
   let roles=await list('role');
   if(!roles.some(r=>r.systemKey==='administrator'))await create('role',{systemKey:'administrator',name:'Administrator',permissions:['*'],protected:true});
+  if(!roles.some(r=>r.systemKey==='team_leader'))await create('role',{systemKey:'team_leader',name:'Team Leader',permissions:['tasks.view','tasks.create','tasks.delegate','tasks.edit','tasks.close','tickets.create','tickets.assign','leave.request','kpi.self','kpi.team']});
   if(!roles.some(r=>r.systemKey==='manager'))await create('role',{systemKey:'manager',name:'Manager',permissions:['users.view','groups.manage','tasks.create','tasks.delegate','tasks.edit','tasks.close','tickets.create','tickets.assign','tickets.close','leave.approve','announcements.create','kpi.self','kpi.team']});
   if(!roles.some(r=>r.systemKey==='employee'))await create('role',{systemKey:'employee',name:'Employee',permissions:['tasks.view','tasks.updateOwn','tickets.create','leave.request','kpi.self']});
   if(!roles.some(r=>r.systemKey==='auditor'))await create('role',{systemKey:'auditor',name:'Auditor',permissions:['audit.view','kpi.organization']});
