@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8"><title>Stage 06 Multi-Client Concurrency Gate</title>
+<style>body{font:14px system-ui;margin:30px;max-width:980px}button{padding:10px 14px;margin:4px}pre{white-space:pre-wrap;background:#111;color:#ddd;padding:16px}.warn{color:#a60}</style>
+<h1>Stage 06 — Multi-Client Concurrency Gate</h1>
+<p>Open this file in <strong>two browser tabs/windows</strong> and connect both to the same fresh workspace. Use Setup once, then run Client A in one tab and Client B in the other as close together as possible.</p>
+<button id="connect">Select Workspace</button><button id="setup">Setup Race Fixture</button>
+<h2>Race 1 — duplicate username/group</h2>
+<button id="a1">Client A: create duplicates</button><button id="b1">Client B: create duplicates</button><button id="check1">Check Race 1</button>
+<h2>Race 2 — final Administrator</h2>
+<button id="a2">Client A: disable Admin B</button><button id="b2">Client B: disable Admin A</button><button id="check2">Check Race 2</button>
+<pre id="out">Ready.</pre>
+<script src="../js/filesystem.js"></script><script src="../js/store.js"></script><script src="../js/identity.js"></script><script src="../js/auth.js"></script><script src="../js/admin.js"></script>
+<script>
+const out=document.querySelector('#out'),log=s=>out.textContent+=s+'\n';let fixture=null;
+async function connect(select=true){if(select)await TM.FileSystem.selectWorkspace();else await TM.FileSystem.restoreWorkspace();await TM.FileSystem.ensurePermission();await TM.Store.bootstrapSystem();log('CONNECTED')}
+async function findFixture(){const us=(await TM.Store.list('user')).filter(x=>!x._corrupt),roles=(await TM.Store.list('role')).filter(x=>!x._corrupt),ar=roles.find(r=>r.systemKey==='administrator');return{a:us.find(u=>u.username==='race-admin-a'),b:us.find(u=>u.username==='race-admin-b'),ar}}
+document.querySelector('#connect').onclick=()=>connect(true).catch(e=>log('ERROR '+e.message));
+document.querySelector('#setup').onclick=async()=>{try{if(!TM.FileSystem.current())await connect(false);if((await TM.Store.list('user')).some(x=>!x._corrupt))throw Error('Fixture requires a fresh workspace');const a=await TM.Auth.firstAdmin({username:'race-admin-a',displayName:'Race Admin A',password:'Race-Admin-A-Password!'}),ar=(await TM.Store.list('role')).find(r=>r.systemKey==='administrator'),b=await TM.Store.createUser({username:'race-admin-b',displayName:'Race Admin B',...(await TM.Auth.passwordRecord('Race-Admin-B-Password!'))});await TM.Store.addMembership({userId:b.id,roleId:ar.id});fixture={a,b,ar};log('SETUP PASS — two active Administrators')}catch(e){log('SETUP ERROR '+e.message)}};
+async function duplicate(client){try{const f=await findFixture();await TM.Admin.createUser(f.a.id,{username:'race-duplicate',displayName:'Duplicate '+client,password:'Race-Duplicate-Password!'});await TM.Admin.createGroup(f.a.id,{name:'Race Duplicate Group',description:client});log(client+' duplicate writes completed')}catch(e){log(client+' result: '+e.message)}}
+document.querySelector('#a1').onclick=()=>duplicate('A');document.querySelector('#b1').onclick=()=>duplicate('B');
+document.querySelector('#check1').onclick=async()=>{const us=(await TM.Store.list('user')).filter(x=>!x._corrupt&&x.username==='race-duplicate'),gs=(await TM.Store.list('group')).filter(x=>!x._corrupt&&String(x.name).toLowerCase()==='race duplicate group');log('RACE 1 RESULT users='+us.length+' groups='+gs.length);log(us.length===1&&gs.length===1?'RACE 1 PASS':'RACE 1 FAIL — duplicate identities survived')};
+async function disable(which){try{const f=await findFixture(),target=which==='A'?f.b:f.a,actor=which==='A'?f.a:f.b;await TM.Admin.setUserEnabled(actor.id,target.id,false);log('Client '+which+' disabled '+target.username)}catch(e){log('Client '+which+' result: '+e.message)}}
+document.querySelector('#a2').onclick=()=>disable('A');document.querySelector('#b2').onclick=()=>disable('B');
+document.querySelector('#check2').onclick=async()=>{const a=await TM.Identity.activeAdmins();log('RACE 2 RESULT activeAdmins='+a.length);log(a.length>=1?'RACE 2 PASS':'RACE 2 FAIL — zero active Administrators')};
+</script>
