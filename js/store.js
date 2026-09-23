@@ -4,14 +4,14 @@ TM.Store=(()=>{
  const TYPES={
   user:{prefix:'USR',path:['Identity','Users']},role:{prefix:'ROL',path:['Identity','Roles']},
   group:{prefix:'GRP',path:['Identity','Groups']},membership:{prefix:'MBR',path:['Identity','Memberships']},session:{prefix:'SES',path:['Identity','Sessions']},userEvent:{prefix:'UEV',path:['Identity','UserEvents']},membershipEvent:{prefix:'MEV',path:['Identity','MembershipEvents']},groupEvent:{prefix:'GEV',path:['Identity','GroupEvents']},
-  project:{prefix:'PRJ',path:['Projects','Records']},projectEvent:{prefix:'PEV',path:['Projects','Events']},projectMember:{prefix:'PMB',path:['Projects','Members']},projectGroup:{prefix:'PGR',path:['Projects','Groups']},task:{prefix:'TSK',path:['Tasks','Records']},taskEvent:{prefix:'TEV',path:['Tasks','Events']},
+  project:{prefix:'PRJ',path:['Projects','Records']},projectEvent:{prefix:'PEV',path:['Projects','Events']},projectMember:{prefix:'PMB',path:['Projects','Members']},projectGroup:{prefix:'PGR',path:['Projects','Groups']},projectGroupEvent:{prefix:'PGE',path:['Projects','GroupEvents']},task:{prefix:'TSK',path:['Tasks','Records']},taskEvent:{prefix:'TEV',path:['Tasks','Events']},
   event:{prefix:'EVT',path:['_Lab','Events']}
  };
  const uid=t=>TYPES[t].prefix+'-'+crypto.randomUUID(),now=()=>new Date().toISOString();
  async function init(){
   await TM.FileSystem.initializeWorkspace();
   for(const t of ['Users','Roles','Groups','Memberships','Sessions','UserEvents','MembershipEvents','GroupEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Identity',t]));
-  for(const t of ['Records','Events','Members','Groups'])await TM.FileSystem.createDirectory(BASE.concat(['Projects',t]));
+  for(const t of ['Records','Events','Members','Groups','GroupEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Projects',t]));
   for(const t of ['Records','Events'])await TM.FileSystem.createDirectory(BASE.concat(['Tasks',t]));
   await TM.FileSystem.createDirectory(BASE.concat(['_Lab','Events']));
  }
@@ -39,10 +39,11 @@ TM.Store=(()=>{
  async function createProject({name,description='',ownerId,groupId=null,status='Active'}){if(!name||!ownerId)throw Error('project name and ownerId required');return create('project',{name,description,ownerId,groupId,status})}
  async function addProjectEvent({projectId,action,value,actorId}){if(!projectId||!action||!actorId)throw Error('projectId, action and actorId required');return create('projectEvent',{projectId,action,value,actorId})}
  async function addProjectGroup({projectId,groupId,actorId}){if(!projectId||!groupId||!actorId)throw Error('projectId, groupId and actorId required');return create('projectGroup',{projectId,groupId,actorId,enabled:true})}
+ async function addProjectGroupEvent({projectGroupId,projectId,action,value,actorId}){if(!projectGroupId||!projectId||!action||!actorId)throw Error('projectGroupId, projectId, action and actorId required');return create('projectGroupEvent',{projectGroupId,projectId,action,value,actorId})}
  async function addProjectMember({projectId,userId,role='member',actorId}){if(!projectId||!userId||!actorId)throw Error('projectId, userId and actorId required');return create('projectMember',{projectId,userId,role,actorId,enabled:true})}
  async function createTask({projectId=null,responsibleGroupId,title,description='',creatorId,assigneeId=null,priority='Normal',status='Draft',dueAt=null}){if(!responsibleGroupId||!title||!creatorId)throw Error('responsibleGroupId, title and creatorId required');return create('task',{projectId,responsibleGroupId,title,description,creatorId,assigneeId,priority,status,dueAt})}
  async function addTaskEvent({taskId,action,value,actorId}){if(!taskId||!action||!actorId)throw Error('taskId, action and actorId required');return create('taskEvent',{taskId,action,value,actorId})}
  async function createEvent(client,payload={}){return create('event',{client,payload})}
  async function scanEvents(){const rows=await list('event'),stats={files:rows.length,valid:0,corrupt:0,duplicateIds:0,clients:{},ids:new Set(),errors:[]};for(const r of rows){if(r._corrupt){stats.corrupt++;stats.errors.push({file:r.file,error:r.error});continue}try{if(r.schema!==SCHEMA||r.type!=='event'||typeof r.id!=='string'||typeof r.client!=='string'||!r.createdAt)throw Error('invalid record schema');if(stats.ids.has(r.id))stats.duplicateIds++;else stats.ids.add(r.id);stats.clients[r.client]=(stats.clients[r.client]||0)+1;stats.valid++}catch(e){stats.corrupt++;stats.errors.push({file:r.id||'unknown',error:e.message})}}stats.uniqueIds=stats.ids.size;delete stats.ids;return stats}
- return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createProject,addProjectEvent,addProjectGroup,addProjectMember,createTask,addTaskEvent,createEvent,scanEvents};
+ return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createProject,addProjectEvent,addProjectGroup,addProjectGroupEvent,addProjectMember,createTask,addTaskEvent,createEvent,scanEvents};
 })();
