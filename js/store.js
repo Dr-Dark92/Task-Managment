@@ -4,12 +4,14 @@ TM.Store=(()=>{
  const TYPES={
   user:{prefix:'USR',path:['Identity','Users']},role:{prefix:'ROL',path:['Identity','Roles']},
   group:{prefix:'GRP',path:['Identity','Groups']},membership:{prefix:'MBR',path:['Identity','Memberships']},session:{prefix:'SES',path:['Identity','Sessions']},userEvent:{prefix:'UEV',path:['Identity','UserEvents']},membershipEvent:{prefix:'MEV',path:['Identity','MembershipEvents']},groupEvent:{prefix:'GEV',path:['Identity','GroupEvents']},
+  project:{prefix:'PRJ',path:['Projects','Records']},projectEvent:{prefix:'PEV',path:['Projects','Events']},projectMember:{prefix:'PMB',path:['Projects','Members']},
   event:{prefix:'EVT',path:['_Lab','Events']}
  };
  const uid=t=>TYPES[t].prefix+'-'+crypto.randomUUID(),now=()=>new Date().toISOString();
  async function init(){
   await TM.FileSystem.initializeWorkspace();
   for(const t of ['Users','Roles','Groups','Memberships','Sessions','UserEvents','MembershipEvents','GroupEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Identity',t]));
+  for(const t of ['Records','Events','Members'])await TM.FileSystem.createDirectory(BASE.concat(['Projects',t]));
   await TM.FileSystem.createDirectory(BASE.concat(['_Lab','Events']));
  }
  async function create(type,data){
@@ -33,7 +35,10 @@ TM.Store=(()=>{
  async function createUser({username,displayName,passwordHash=null,passwordSalt=null,passwordIterations=null,passwordAlgorithm=null,enabled=true}){if(!username||!displayName)throw Error('username and displayName required');return create('user',{username,displayName,passwordHash,passwordSalt,passwordIterations,passwordAlgorithm,enabled})}
  async function createGroup({name,description=''}){if(!name)throw Error('group name required');return create('group',{name,description,enabled:true})}
  async function addMembership({userId,groupId=null,roleId}){if(!userId||!roleId)throw Error('userId and roleId required');return create('membership',{userId,groupId,roleId,enabled:true})}
+ async function createProject({name,description='',ownerId,groupId=null,status='Active'}){if(!name||!ownerId)throw Error('project name and ownerId required');return create('project',{name,description,ownerId,groupId,status})}
+ async function addProjectEvent({projectId,action,value,actorId}){if(!projectId||!action||!actorId)throw Error('projectId, action and actorId required');return create('projectEvent',{projectId,action,value,actorId})}
+ async function addProjectMember({projectId,userId,role='member',actorId}){if(!projectId||!userId||!actorId)throw Error('projectId, userId and actorId required');return create('projectMember',{projectId,userId,role,actorId,enabled:true})}
  async function createEvent(client,payload={}){return create('event',{client,payload})}
  async function scanEvents(){const rows=await list('event'),stats={files:rows.length,valid:0,corrupt:0,duplicateIds:0,clients:{},ids:new Set(),errors:[]};for(const r of rows){if(r._corrupt){stats.corrupt++;stats.errors.push({file:r.file,error:r.error});continue}try{if(r.schema!==SCHEMA||r.type!=='event'||typeof r.id!=='string'||typeof r.client!=='string'||!r.createdAt)throw Error('invalid record schema');if(stats.ids.has(r.id))stats.duplicateIds++;else stats.ids.add(r.id);stats.clients[r.client]=(stats.clients[r.client]||0)+1;stats.valid++}catch(e){stats.corrupt++;stats.errors.push({file:r.id||'unknown',error:e.message})}}stats.uniqueIds=stats.ids.size;delete stats.ids;return stats}
- return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createEvent,scanEvents};
+ return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createProject,addProjectEvent,addProjectMember,createEvent,scanEvents};
 })();
