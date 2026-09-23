@@ -5,6 +5,7 @@ TM.Admin=(()=>{
  async function createGroup(actorId,{name,description=''}){await requirePermission(actorId,'groups.manage');name=String(name||'').trim();if(!name)throw Error('group name required');if((await TM.Store.list('group')).some(g=>!g._corrupt&&String(g.name).toLowerCase()===name.toLowerCase()))throw Error('Group already exists');return TM.Store.createGroup({name,description:String(description||'').trim()})}
  async function assignRole(actorId,{userId,roleId,groupId=null}){await requirePermission(actorId,'users.edit');for(const m of await TM.Store.list('membership')){if(m._corrupt||m.userId!==userId||m.roleId!==roleId||m.groupId!==groupId)continue;if((await TM.Identity.membershipState(m)).enabled)throw Error('Active membership already exists')}return TM.Store.addMembership({userId,roleId,groupId})}
  async function setUserEnabled(actorId,userId,value){await requirePermission(actorId,'users.disable');return TM.Identity.setUserEnabled(userId,value,actorId)}
- async function setMembershipEnabled(actorId,membershipId,value){await requirePermission(actorId,'users.edit');return TM.Identity.setMembershipEnabled(membershipId,value,actorId)}\n async function setDisplayName(actorId,userId,value){await requirePermission(actorId,'users.edit');return TM.Identity.setDisplayName(userId,value,actorId)}
+ async function setMembershipEnabled(actorId,membershipId,value){await requirePermission(actorId,'users.edit');return TM.Identity.setMembershipEnabled(membershipId,value,actorId)}
+ async function setDisplayName(actorId,userId,value){await requirePermission(actorId,'users.edit');return TM.Identity.setDisplayName(userId,value,actorId)}
  return{createUser,createGroup,assignRole,setUserEnabled,setMembershipEnabled,setDisplayName};
 })();
