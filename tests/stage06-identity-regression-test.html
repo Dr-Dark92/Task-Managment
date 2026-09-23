@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Stage 06 Identity Regression Test</title>
+<style>body{font:14px system-ui;margin:30px;max-width:900px}button{padding:10px 14px}pre{white-space:pre-wrap;background:#111;color:#ddd;padding:16px}</style>
+<h1>Stage 06 — Identity Regression Test</h1>
+<p>Select a <strong>fresh test workspace</strong>. This test creates its own Administrator and test identities.</p>
+<button id="run">Select Fresh Workspace & Run</button>
+<pre id="out">Ready.</pre>
+<script src="../js/filesystem.js"></script>
+<script src="../js/store.js"></script>
+<script src="../js/identity.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/admin.js"></script>
+<script>
+const out=document.querySelector('#out'),log=s=>out.textContent+=s+'\n',ok=(n,v)=>{if(!v)throw Error(n+' failed');log(n+' PASS')};
+document.querySelector('#run').onclick=async()=>{out.textContent='';try{
+ await TM.FileSystem.selectWorkspace();await TM.FileSystem.ensurePermission(TM.FileSystem.current());await TM.Store.bootstrapSystem();
+ ok('FRESH WORKSPACE',(await TM.Store.list('user')).filter(x=>!x._corrupt).length===0);
+ const admin=await TM.Auth.firstAdmin({username:'stage06admin',displayName:'Stage 06 Admin',password:'Stage06-Test-Password!'});
+ const login=await TM.Auth.login('stage06admin','Stage06-Test-Password!');ok('ADMIN LOGIN',login.user.id===admin.id);
+ const employee=(await TM.Store.list('role')).find(r=>r.systemKey==='employee');
+ const group=await TM.Admin.createGroup(admin.id,{name:'Stage 06 Group',description:'original'});
+ const user=await TM.Admin.createUser(admin.id,{username:'stage06user',displayName:'Stage 06 User',password:'Stage06-User-Password!',roleId:employee.id,groupId:group.id});
+ const raw=await TM.Store.get('user',user.id);ok('PASSWORD METADATA',raw.passwordAlgorithm==='PBKDF2-SHA256'&&raw.passwordIterations===210000&&!!raw.passwordSalt&&!!raw.passwordHash);
+ ok('EMPLOYEE PERMISSION BEFORE REMOVE',await TM.Auth.can(user.id,'tasks.view'));
+ const membership=(await TM.Store.list('membership')).find(m=>m.userId===user.id&&m.roleId===employee.id&&m.groupId===group.id);
+ await TM.Admin.setMembershipEnabled(admin.id,membership.id,false);ok('DISABLED MEMBERSHIP LOSES PERMISSION',!(await TM.Auth.can(user.id,'tasks.view')));
+ const before=(await TM.Store.list('membership')).filter(m=>!m._corrupt).length;await TM.Admin.assignRole(admin.id,{userId:user.id,roleId:employee.id,groupId:group.id});const after=(await TM.Store.list('membership')).filter(m=>!m._corrupt).length;ok('MEMBERSHIP REACTIVATION NO DUPLICATE',before===after&&(await TM.Identity.membershipState(membership)).enabled);
+ await TM.Admin.setUserEnabled(admin.id,user.id,false);let rejected=false;try{await TM.Auth.login('stage06user','Stage06-User-Password!')}catch{rejected=true}ok('DISABLED USER LOGIN REJECTED',rejected);
+ await TM.Admin.editGroup(admin.id,group.id,{name:'Stage 06 Group Renamed',description:'updated'});let gs=await TM.Identity.groupState(group.id);ok('GROUP EVENT REDUCER',gs.name==='Stage 06 Group Renamed'&&gs.description==='updated');
+ await TM.Admin.setGroupEnabled(admin.id,group.id,false);gs=await TM.Identity.groupState(group.id);ok('GROUP ARCHIVE',gs.enabled===false);await TM.Admin.setGroupEnabled(admin.id,group.id,true);gs=await TM.Identity.groupState(group.id);ok('GROUP RESTORE',gs.enabled===true);
+ let adminRejected=false;const am=(await TM.Store.list('membership')).find(async m=>m.userId===admin.id);const ar=(await TM.Store.list('role')).find(r=>r.systemKey==='administrator');const adminMembership=(await TM.Store.list('membership')).find(m=>m.userId===admin.id&&m.roleId===ar.id);try{await TM.Admin.setMembershipEnabled(admin.id,adminMembership.id,false)}catch{adminRejected=true}ok('FINAL ADMIN PROTECTION',adminRejected);
+ log('\nSTAGE 06 REGRESSION PASS');log('NOTE: cross-client simultaneous uniqueness/final-admin races are NOT tested here.');
+ }catch(e){log('\nFAIL: '+e.message);console.error(e)}};
+</script>
