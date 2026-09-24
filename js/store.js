@@ -4,17 +4,17 @@ TM.Store=(()=>{
  const TYPES={
   user:{prefix:'USR',path:['Identity','Users']},role:{prefix:'ROL',path:['Identity','Roles']},
   group:{prefix:'GRP',path:['Identity','Groups']},membership:{prefix:'MBR',path:['Identity','Memberships']},session:{prefix:'SES',path:['Identity','Sessions']},userEvent:{prefix:'UEV',path:['Identity','UserEvents']},membershipEvent:{prefix:'MEV',path:['Identity','MembershipEvents']},groupEvent:{prefix:'GEV',path:['Identity','GroupEvents']},
-  project:{prefix:'PRJ',path:['Projects','Records']},projectEvent:{prefix:'PEV',path:['Projects','Events']},projectMember:{prefix:'PMB',path:['Projects','Members']},projectGroup:{prefix:'PGR',path:['Projects','Groups']},projectGroupEvent:{prefix:'PGE',path:['Projects','GroupEvents']},task:{prefix:'TSK',path:['Tasks','Records']},taskEvent:{prefix:'TEV',path:['Tasks','Events']},announcement:{prefix:'ANN',path:['Announcements','Records']},ticket:{prefix:'TKT',path:['Tickets','Records']},ticketEvent:{prefix:'TKE',path:['Tickets','Events']},
+  project:{prefix:'PRJ',path:['Projects','Records']},projectEvent:{prefix:'PEV',path:['Projects','Events']},projectMember:{prefix:'PMB',path:['Projects','Members']},projectGroup:{prefix:'PGR',path:['Projects','Groups']},projectGroupEvent:{prefix:'PGE',path:['Projects','GroupEvents']},task:{prefix:'TSK',path:['Tasks','Records']},taskEvent:{prefix:'TEV',path:['Tasks','Events']},announcement:{prefix:'ANN',path:['Announcements','Records']},ticket:{prefix:'TKT',path:['Tickets','Records']},ticketEvent:{prefix:'TKE',path:['Tickets','Events']},ticketComment:{prefix:'TKC',path:['Tickets','Comments']},projectComment:{prefix:'PRC',path:['Projects','Comments']},
   event:{prefix:'EVT',path:['_Lab','Events']}
  };
  const uid=t=>TYPES[t].prefix+'-'+crypto.randomUUID(),now=()=>new Date().toISOString();
  async function init(){
   await TM.FileSystem.initializeWorkspace();
   for(const t of ['Users','Roles','Groups','Memberships','Sessions','UserEvents','MembershipEvents','GroupEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Identity',t]));
-  for(const t of ['Records','Events','Members','Groups','GroupEvents'])await TM.FileSystem.createDirectory(BASE.concat(['Projects',t]));
+  for(const t of ['Records','Events','Members','Groups','GroupEvents','Comments'])await TM.FileSystem.createDirectory(BASE.concat(['Projects',t]));
   for(const t of ['Records','Events'])await TM.FileSystem.createDirectory(BASE.concat(['Tasks',t]));
   await TM.FileSystem.createDirectory(BASE.concat(['Announcements','Records']));
-  for(const t of ['Records','Events'])await TM.FileSystem.createDirectory(BASE.concat(['Tickets',t]));
+  for(const t of ['Records','Events','Comments'])await TM.FileSystem.createDirectory(BASE.concat(['Tickets',t]));
   await TM.FileSystem.createDirectory(BASE.concat(['_Lab','Events']));
  }
  async function create(type,data){
@@ -48,8 +48,10 @@ TM.Store=(()=>{
  async function addTaskEvent({taskId,action,value,actorId}){if(!taskId||!action||!actorId)throw Error('taskId, action and actorId required');return create('taskEvent',{taskId,action,value,actorId})}
  async function createTicket({requesterId,responsibleGroupId,title,description='',priority='Normal',assigneeId=null,status='Open'}){if(!requesterId||!responsibleGroupId||!title)throw Error('requesterId, responsibleGroupId and title required');return create('ticket',{requesterId,responsibleGroupId,title,description,priority,assigneeId,status})}
  async function addTicketEvent({ticketId,action,value,actorId}){if(!ticketId||!action||!actorId)throw Error('ticketId, action and actorId required');return create('ticketEvent',{ticketId,action,value,actorId})}
+ async function addTicketComment({ticketId,authorId,html}){if(!ticketId||!authorId||!html)throw Error('ticketId, authorId and html required');return create('ticketComment',{ticketId,authorId,html})}
+ async function addProjectComment({projectId,authorId,html}){if(!projectId||!authorId||!html)throw Error('projectId, authorId and html required');return create('projectComment',{projectId,authorId,html})}
  async function createAnnouncement({level,title,message,creatorId,groupId=null,projectId=null,remindAt=null,expiresAt=null}){if(!level||!title||!message||!creatorId)throw Error('announcement level, title, message and creatorId required');return create('announcement',{level,title,message,creatorId,groupId,projectId,remindAt,expiresAt,enabled:true})}
  async function createEvent(client,payload={}){return create('event',{client,payload})}
  async function scanEvents(){const rows=await list('event'),stats={files:rows.length,valid:0,corrupt:0,duplicateIds:0,clients:{},ids:new Set(),errors:[]};for(const r of rows){if(r._corrupt){stats.corrupt++;stats.errors.push({file:r.file,error:r.error});continue}try{if(r.schema!==SCHEMA||r.type!=='event'||typeof r.id!=='string'||typeof r.client!=='string'||!r.createdAt)throw Error('invalid record schema');if(stats.ids.has(r.id))stats.duplicateIds++;else stats.ids.add(r.id);stats.clients[r.client]=(stats.clients[r.client]||0)+1;stats.valid++}catch(e){stats.corrupt++;stats.errors.push({file:r.id||'unknown',error:e.message})}}stats.uniqueIds=stats.ids.size;delete stats.ids;return stats}
- return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createProject,addProjectEvent,addProjectGroup,addProjectGroupEvent,addProjectMember,createTask,addTaskEvent,createTicket,addTicketEvent,createAnnouncement,createEvent,scanEvents};
+ return{SCHEMA,init,bootstrapSystem,create,get,list,createUser,createGroup,addMembership,createProject,addProjectEvent,addProjectGroup,addProjectGroupEvent,addProjectMember,createTask,addTaskEvent,createTicket,addTicketEvent,addTicketComment,addProjectComment,createAnnouncement,createEvent,scanEvents};
 })();
