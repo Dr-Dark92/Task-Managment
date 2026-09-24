@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8"><title>Stage 07 Projects Regression Gate</title>
+<style>body{font:14px system-ui;margin:30px;max-width:950px}button{padding:10px 14px}pre{white-space:pre-wrap;background:#111;color:#ddd;padding:16px}</style>
+<h1>Stage 07 — Projects Regression Gate</h1>
+<p>Select a <strong>fresh test workspace</strong>. This creates isolated project, group, user and task fixtures.</p>
+<button id="run">Select Fresh Workspace & Run</button><pre id="out">Ready.</pre>
+<script src="../js/filesystem.js"></script><script src="../js/store.js"></script><script src="../js/identity.js"></script><script src="../js/auth.js"></script><script src="../js/admin.js"></script><script src="../js/projects.js"></script><script src="../js/tasks.js"></script>
+<script>
+const out=document.querySelector('#out'),log=s=>out.textContent+=s+'\n',ok=(n,v)=>{if(!v)throw Error(n+' failed');log(n+' PASS')};
+document.querySelector('#run').onclick=async()=>{out.textContent='';try{
+ await TM.FileSystem.selectWorkspace();await TM.FileSystem.ensurePermission(TM.FileSystem.current());await TM.Store.bootstrapSystem();
+ ok('FRESH WORKSPACE',(await TM.Store.list('user')).filter(x=>!x._corrupt).length===0);
+ const admin=await TM.Auth.firstAdmin({username:'stage07admin',displayName:'Stage 07 Admin',password:'Stage07-Admin-Password!'});
+ const roles=(await TM.Store.list('role')).filter(x=>!x._corrupt),leader=roles.find(r=>r.systemKey==='team_leader'),employee=roles.find(r=>r.systemKey==='employee');
+ const ga=await TM.Admin.createGroup(admin.id,{name:'Alpha'}),gb=await TM.Admin.createGroup(admin.id,{name:'Bravo'}),gc=await TM.Admin.createGroup(admin.id,{name:'Charlie'});
+ const la=await TM.Admin.createUser(admin.id,{username:'leadera',displayName:'Leader A',password:'Stage07-LeaderA-Pass!',roleId:leader.id,groupId:ga.id});
+ const lb=await TM.Admin.createUser(admin.id,{username:'leaderb',displayName:'Leader B',password:'Stage07-LeaderB-Pass!',roleId:leader.id,groupId:gb.id});
+ const ea=await TM.Admin.createUser(admin.id,{username:'employeea',displayName:'Employee A',password:'Stage07-EmployeeA-Pass!',roleId:employee.id,groupId:ga.id});
+ const outsider=await TM.Admin.createUser(admin.id,{username:'outsider',displayName:'Outsider',password:'Stage07-Outsider-Pass!',roleId:employee.id,groupId:gc.id});
+ const p=await TM.Projects.create(admin.id,{name:'Stage 07 Project',description:'gate',groupIds:[ga.id,gb.id],startDate:'2026-09-01',targetDate:'2026-10-01'});
+ ok('MULTI GROUP PROJECT',(await TM.Projects.groups(p.id)).length===2);
+ ok('PROJECT ACCESS GROUP MEMBER',await TM.Projects.canAccess(ea.id,p.id));
+ ok('PROJECT ACCESS ISOLATION',!(await TM.Projects.canAccess(outsider.id,p.id)));
+ const own=await TM.Tasks.create(la.id,{projectId:p.id,responsibleGroupId:ga.id,title:'Alpha task',assigneeId:ea.id,priority:'Normal'});
+ ok('SAME GROUP ASSIGNMENT',own.status==='Assigned'&&own.assigneeId===ea.id);
+ const cross=await TM.Tasks.create(la.id,{projectId:p.id,responsibleGroupId:gb.id,title:'Bravo handoff',priority:'High'});
+ ok('CROSS GROUP HANDOFF',cross.status==='Pending Group Acceptance'&&!cross.assigneeId);
+ let wrong=false;try{await TM.Tasks.acceptGroup(la.id,cross.id)}catch{wrong=true}ok('WRONG LEADER CANNOT ACCEPT',wrong);
+ await TM.Tasks.acceptGroup(lb.id,cross.id);ok('DESTINATION LEADER ACCEPTS',(await TM.Tasks.state(cross.id)).status==='Draft');
+ let badAssign=false;try{await TM.Tasks.assign(lb.id,cross.id,ea.id)}catch{badAssign=true}ok('CROSS GROUP MEMBER ASSIGNMENT BLOCKED',badAssign);
+ let removeBlocked=false;try{await TM.Projects.setGroups(admin.id,p.id,[gb.id])}catch{removeBlocked=true}ok('ACTIVE TASK GROUP REMOVAL BLOCKED',removeBlocked);
+ let projectCompleteBlocked=false;try{await TM.Projects.setStatus(admin.id,p.id,'Completed')}catch{projectCompleteBlocked=true}ok('PROJECT COMPLETION WITH ACTIVE TASKS BLOCKED',projectCompleteBlocked);
+ await TM.Tasks.setStatus(admin.id,own.id,'Completed');await TM.Tasks.setStatus(admin.id,cross.id,'Cancelled');
+ await TM.Projects.setStatus(admin.id,p.id,'Completed');ok('PROJECT COMPLETION AFTER TERMINAL TASKS',(await TM.Projects.state(p.id)).status==='Completed');
+ let createBlocked=false;try{await TM.Tasks.create(admin.id,{projectId:p.id,responsibleGroupId:ga.id,title:'Late task'})}catch{createBlocked=true}ok('TASK CREATION IN COMPLETED PROJECT BLOCKED',createBlocked);
+ let assignBlocked=false;try{await TM.Tasks.assign(admin.id,own.id,ea.id)}catch{assignBlocked=true}ok('COMPLETED TASK REASSIGNMENT BLOCKED',assignBlocked);
+ const timeline=await TM.Projects.timeline(p.id);ok('TIMELINE PERSISTED',timeline.some(x=>x.label==='Project completed')&&timeline.some(x=>x.label.includes('Alpha task')));
+ log('\nSTAGE 07 REGRESSION PASS');
+ log('NOTE: This gate validates sequential domain invariants; it does not prove atomic cross-client conflict resolution.');
+ }catch(e){log('\nFAIL: '+e.message);console.error(e)}};
+</script>
