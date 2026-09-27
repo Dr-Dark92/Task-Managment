@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-016",
+  "type": "task",
+  "createdAt": "2026-09-25T10:15:00.000Z",
+  "projectId": null,
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Review stale IOC feed errors",
+  "description": "Detailed dummy task for Review stale IOC feed errors.",
+  "creatorId": "USR-SOC1",
+  "assigneeId": "USR-SOC2",
+  "priority": "Low",
+  "status": "Cancelled",
+  "dueAt": "2026-09-18T12:00:00.000Z"
+}
