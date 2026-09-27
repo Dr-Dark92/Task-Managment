@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "PRJ-002",
+  "type": "project",
+  "createdAt": "2026-08-10T06:00:00.000Z",
+  "name": "Network Segmentation Phase 2",
+  "description": "Detailed synthetic project for Network Segmentation Phase 2.",
+  "ownerId": "USR-NET1",
+  "status": "Active",
+  "startDate": "2026-08-10",
+  "targetDate": "2026-11-15"
+}
