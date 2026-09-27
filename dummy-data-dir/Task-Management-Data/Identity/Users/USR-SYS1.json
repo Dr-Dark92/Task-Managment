@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "USR-SYS1",
+  "type": "user",
+  "createdAt": "2026-08-02T07:00:00.000Z",
+  "username": "khalid",
+  "displayName": "Khalid Al Hinai",
+  "enabled": true
+}
