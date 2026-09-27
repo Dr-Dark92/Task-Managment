@@ -1,0 +1,19 @@
+{
+  "name": "Dummy Operations Workspace",
+  "note": "Synthetic UI and dashboard population dataset. No real credentials.",
+  "counts": {
+    "users": 12,
+    "groups": 5,
+    "projects": 5,
+    "tasks": 16,
+    "tickets": 8,
+    "actions": 8
+  },
+  "groups": [
+    "Security Operations",
+    "Network Security",
+    "Systems Engineering",
+    "Governance & Risk",
+    "Application Security"
+  ]
+}
