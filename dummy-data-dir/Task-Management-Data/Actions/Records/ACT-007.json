@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-007",
+  "type": "actionRecord",
+  "createdAt": "2026-09-27T14:20:00.000Z",
+  "actorId": "USR-APP1",
+  "actionType": "Block Domain / URL",
+  "target": "cdn-test-malicious.example",
+  "reason": "Unexpected third-party script",
+  "details": "Immediate operational action taken for cdn-test-malicious.example.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1006",
+  "groupId": "GRP-APP"
+}
