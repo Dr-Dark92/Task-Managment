@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-005",
+  "type": "ticket",
+  "createdAt": "2026-09-23T09:15:00.000Z",
+  "requesterId": "USR-GRC1",
+  "responsibleGroupId": "GRP-APP",
+  "title": "Provide application security evidence",
+  "description": "Detailed dummy ticket for Provide application security evidence.",
+  "priority": "Low",
+  "assigneeId": "USR-APP2",
+  "status": "Closed"
+}
