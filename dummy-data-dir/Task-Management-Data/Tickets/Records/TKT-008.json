@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-008",
+  "type": "ticket",
+  "createdAt": "2026-09-26T09:15:00.000Z",
+  "requesterId": "USR-APP1",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Service account permission review",
+  "description": "Detailed dummy ticket for Service account permission review.",
+  "priority": "Normal",
+  "assigneeId": "USR-SYS2",
+  "status": "Reopened"
+}
