@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-013",
+  "type": "task",
+  "createdAt": "2026-09-22T10:15:00.000Z",
+  "projectId": null,
+  "responsibleGroupId": "GRP-NET",
+  "title": "Review firewall cleanup candidates",
+  "description": "Detailed dummy task for Review firewall cleanup candidates.",
+  "creatorId": "USR-NET1",
+  "assigneeId": "USR-NET2",
+  "priority": "Normal",
+  "status": "Assigned",
+  "dueAt": "2026-10-03T12:00:00.000Z"
+}
