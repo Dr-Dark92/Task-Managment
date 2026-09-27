@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-011",
+  "type": "task",
+  "createdAt": "2026-09-20T10:15:00.000Z",
+  "projectId": "PRJ-005",
+  "responsibleGroupId": "GRP-APP",
+  "title": "Define secure coding checklist",
+  "description": "Detailed dummy task for Define secure coding checklist.",
+  "creatorId": "USR-APP1",
+  "assigneeId": "USR-APP2",
+  "priority": "Normal",
+  "status": "Draft",
+  "dueAt": "2026-10-15T12:00:00.000Z"
+}
