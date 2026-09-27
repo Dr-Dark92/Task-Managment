@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-006",
+  "type": "ticket",
+  "createdAt": "2026-09-24T09:15:00.000Z",
+  "requesterId": "USR-SYS2",
+  "responsibleGroupId": "GRP-NET",
+  "title": "Server requires restricted outbound rule",
+  "description": "Detailed dummy ticket for Server requires restricted outbound rule.",
+  "priority": "High",
+  "assigneeId": null,
+  "status": "Open"
+}
