@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-001",
+  "type": "actionRecord",
+  "createdAt": "2026-09-24T08:20:00.000Z",
+  "actorId": "USR-SOC1",
+  "actionType": "Block Internal IP",
+  "target": "10.20.14.87",
+  "reason": "Suspicious outbound traffic",
+  "details": "Immediate operational action taken for 10.20.14.87.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1000",
+  "groupId": "GRP-SOC"
+}
