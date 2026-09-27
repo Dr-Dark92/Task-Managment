@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "USR-SYS2",
+  "type": "user",
+  "createdAt": "2026-08-02T07:00:00.000Z",
+  "username": "maryam",
+  "displayName": "Maryam Al Siyabi",
+  "enabled": true
+}
