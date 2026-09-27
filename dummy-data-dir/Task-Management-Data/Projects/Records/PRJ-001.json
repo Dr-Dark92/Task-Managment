@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "PRJ-001",
+  "type": "project",
+  "createdAt": "2026-08-05T06:00:00.000Z",
+  "name": "SOC Monitoring Modernization",
+  "description": "Detailed synthetic project for SOC Monitoring Modernization.",
+  "ownerId": "USR-SOC1",
+  "status": "Active",
+  "startDate": "2026-08-05",
+  "targetDate": "2026-10-30"
+}
