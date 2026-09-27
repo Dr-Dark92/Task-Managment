@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-002",
+  "type": "actionRecord",
+  "createdAt": "2026-09-24T09:20:00.000Z",
+  "actorId": "USR-NET1",
+  "actionType": "Block Domain / URL",
+  "target": "sync-update-example.net",
+  "reason": "Malicious DNS activity",
+  "details": "Immediate operational action taken for sync-update-example.net.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1001",
+  "groupId": "GRP-NET"
+}
