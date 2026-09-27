@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-001",
+  "type": "task",
+  "createdAt": "2026-09-10T09:30:00.000Z",
+  "projectId": "PRJ-001",
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Deploy alert triage dashboard",
+  "description": "Detailed dummy task for Deploy alert triage dashboard.",
+  "creatorId": "USR-SOC1",
+  "assigneeId": "USR-SOC2",
+  "priority": "High",
+  "status": "Completed",
+  "dueAt": "2026-09-01T12:00:00.000Z"
+}
