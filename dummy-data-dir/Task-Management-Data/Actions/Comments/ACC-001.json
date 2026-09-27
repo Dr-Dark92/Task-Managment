@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "ACC-001",
+  "type": "actionComment",
+  "createdAt": "2026-09-26T14:30:00.000Z",
+  "actionId": "ACT-001",
+  "authorId": "USR-NET1",
+  "html": "Network block confirmed on redundant controls."
+}
