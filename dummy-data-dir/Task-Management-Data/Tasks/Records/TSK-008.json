@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-008",
+  "type": "task",
+  "createdAt": "2026-09-17T09:30:00.000Z",
+  "projectId": "PRJ-003",
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Monitor authentication failures",
+  "description": "Detailed dummy task for Monitor authentication failures.",
+  "creatorId": "USR-SYS1",
+  "assigneeId": "USR-SOC2",
+  "priority": "Normal",
+  "status": "Accepted",
+  "dueAt": "2026-10-01T12:00:00.000Z"
+}
