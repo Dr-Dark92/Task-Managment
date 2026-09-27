@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "ANN-003",
+  "type": "announcement",
+  "createdAt": "2026-09-26T06:20:00.000Z",
+  "level": "project",
+  "title": "Segmentation Change",
+  "message": "Phase 2 ACL implementation window confirmed.",
+  "creatorId": "USR-NET1",
+  "groupId": null,
+  "projectId": "PRJ-002",
+  "remindAt": null,
+  "expiresAt": null,
+  "enabled": true
+}
