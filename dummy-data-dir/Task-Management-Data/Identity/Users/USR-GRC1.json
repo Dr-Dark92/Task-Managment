@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "USR-GRC1",
+  "type": "user",
+  "createdAt": "2026-08-02T07:00:00.000Z",
+  "username": "nasser",
+  "displayName": "Nasser Al Lawati",
+  "enabled": true
+}
