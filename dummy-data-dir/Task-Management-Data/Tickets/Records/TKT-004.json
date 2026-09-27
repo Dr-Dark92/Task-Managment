@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-004",
+  "type": "ticket",
+  "createdAt": "2026-09-22T09:15:00.000Z",
+  "requesterId": "USR-NET2",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "DNS registration failing",
+  "description": "Detailed dummy ticket for DNS registration failing.",
+  "priority": "Normal",
+  "assigneeId": "USR-SYS2",
+  "status": "Accepted"
+}
