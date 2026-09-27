@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "ROL-ADMIN",
+  "type": "role",
+  "createdAt": "2026-08-01T06:01:00.000Z",
+  "systemKey": "administrator",
+  "name": "Administrator",
+  "permissions": [
+    "*"
+  ],
+  "protected": true
+}
