@@ -3,7 +3,11 @@
   "id": "USR-ADMIN",
   "type": "user",
   "createdAt": "2026-08-02T07:00:00.000Z",
-  "username": "demo.admin",
+  "username": "admin",
   "displayName": "Demo Administrator",
-  "enabled": true
+  "enabled": true,
+  "passwordHash": "1XHl7qYP6rmN9dg7/oBQH6QPSMySmgNhxepVC6tXHnU=",
+  "passwordSalt": "X008KxoJGCc2RVRjcoGQrw==",
+  "passwordIterations": 210000,
+  "passwordAlgorithm": "PBKDF2-SHA256"
 }
