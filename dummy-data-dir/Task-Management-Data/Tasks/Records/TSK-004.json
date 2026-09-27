@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-004",
+  "type": "task",
+  "createdAt": "2026-09-13T09:30:00.000Z",
+  "projectId": "PRJ-002",
+  "responsibleGroupId": "GRP-NET",
+  "title": "Implement server VLAN ACLs",
+  "description": "Detailed dummy task for Implement server VLAN ACLs.",
+  "creatorId": "USR-NET1",
+  "assigneeId": "USR-NET2",
+  "priority": "Critical",
+  "status": "In Progress",
+  "dueAt": "2026-09-25T12:00:00.000Z"
+}
