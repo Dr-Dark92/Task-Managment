@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "PGR-006",
+  "type": "projectGroup",
+  "createdAt": "2026-08-05T07:00:00.000Z",
+  "projectId": "PRJ-003",
+  "groupId": "GRP-SOC",
+  "actorId": "USR-ADMIN",
+  "enabled": true
+}
