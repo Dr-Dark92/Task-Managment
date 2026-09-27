@@ -42,3 +42,16 @@ textarea{font:inherit;border-radius:9px;border:1px solid #374151;padding:10px 12
 @media(max-width:1200px){.dashboard-stats{grid-template-columns:repeat(3,1fr)}.dashboard-progress{grid-template-columns:1fr}.dashboard-progress>.card{min-height:auto}.donut-wrap{justify-content:flex-start}}
 @media(max-width:850px){.dashboard-feed{grid-template-columns:1fr}.dashboard-stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.dashboard-stats{grid-template-columns:1fr}.donut-wrap{align-items:flex-start}.table{display:block;overflow-x:auto}}
+
+.kpi-chart{display:grid;grid-template-columns:42px 1fr;min-height:310px;margin-top:18px}
+.kpi-y{display:flex;flex-direction:column;justify-content:space-between;text-align:right;padding:0 9px 46px 0;color:#64748b;font-size:12px}
+.kpi-plot{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:18px;align-items:end;border-left:1px solid #334155;border-bottom:1px solid #334155;background:repeating-linear-gradient(to top,transparent 0,transparent 73px,#1e293b 74px);padding:12px 18px 0;min-width:0}
+.kpi-group{height:250px;display:grid;grid-template-rows:1fr 42px;align-items:end;text-align:center;min-width:0}
+.kpi-columns{height:200px;display:flex;align-items:end;justify-content:center;gap:8px}
+.kpi-column{position:relative;width:min(28px,25%);height:max(4px,calc((var(--v)/var(--max))*100%));border-radius:6px 6px 0 0;transition:height .2s}
+.kpi-column span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:#cbd5e1}
+.kpi-open{background:#3b82f6}.kpi-closed{background:#22c55e}.kpi-late-bar{background:#ef4444}
+.kpi-group>strong{font-size:12px;line-height:1.2;overflow-wrap:anywhere;color:#cbd5e1}
+.kpi-chart-legend{display:flex;justify-content:center;gap:22px;margin-top:16px;color:#cbd5e1;font-size:13px}
+.kpi-chart-legend span{display:flex;align-items:center;gap:7px}.kpi-chart-legend i{display:inline-block;width:11px;height:11px;border-radius:3px}
+@media(max-width:850px){.kpi-chart{overflow-x:auto}.kpi-plot{grid-template-columns:repeat(var(--groups,5),120px);min-width:650px}}
