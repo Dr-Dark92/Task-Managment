@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "USR-EMP2",
+  "type": "user",
+  "createdAt": "2026-08-02T07:00:00.000Z",
+  "username": "reem",
+  "displayName": "Reem Al Shukaili",
+  "enabled": true
+}
