@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-009",
+  "type": "task",
+  "createdAt": "2026-09-18T10:15:00.000Z",
+  "projectId": "PRJ-004",
+  "responsibleGroupId": "GRP-GRC",
+  "title": "Update incident response policy",
+  "description": "Detailed dummy task for Update incident response policy.",
+  "creatorId": "USR-GRC1",
+  "assigneeId": "USR-GRC1",
+  "priority": "Normal",
+  "status": "Completed",
+  "dueAt": "2026-08-30T12:00:00.000Z"
+}
