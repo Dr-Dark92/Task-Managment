@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-007",
+  "type": "ticket",
+  "createdAt": "2026-09-25T09:15:00.000Z",
+  "requesterId": "USR-EMP1",
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Possible phishing attachment",
+  "description": "Detailed dummy ticket for Possible phishing attachment.",
+  "priority": "Critical",
+  "assigneeId": "USR-SOC2",
+  "status": "Assigned"
+}
