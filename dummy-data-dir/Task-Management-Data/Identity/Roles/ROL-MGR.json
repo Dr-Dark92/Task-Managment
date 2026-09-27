@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "id": "ROL-MGR",
+  "type": "role",
+  "createdAt": "2026-08-01T06:01:00.000Z",
+  "systemKey": "manager",
+  "name": "Manager",
+  "permissions": [
+    "tasks.view",
+    "tasks.create",
+    "tasks.delegate",
+    "tasks.edit",
+    "tasks.close",
+    "tickets.create",
+    "tickets.assign",
+    "tickets.close",
+    "announcements.create",
+    "kpi.self",
+    "kpi.team"
+  ],
+  "protected": false
+}
