@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-010",
+  "type": "task",
+  "createdAt": "2026-09-19T10:15:00.000Z",
+  "projectId": "PRJ-004",
+  "responsibleGroupId": "GRP-GRC",
+  "title": "Collect annual control evidence",
+  "description": "Detailed dummy task for Collect annual control evidence.",
+  "creatorId": "USR-GRC1",
+  "assigneeId": "USR-GRC1",
+  "priority": "Normal",
+  "status": "Completed",
+  "dueAt": "2026-09-05T12:00:00.000Z"
+}
