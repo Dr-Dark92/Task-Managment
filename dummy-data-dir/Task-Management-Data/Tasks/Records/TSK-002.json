@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-002",
+  "type": "task",
+  "createdAt": "2026-09-11T09:30:00.000Z",
+  "projectId": "PRJ-001",
+  "responsibleGroupId": "GRP-NET",
+  "title": "Mirror firewall telemetry",
+  "description": "Detailed dummy task for Mirror firewall telemetry.",
+  "creatorId": "USR-SOC1",
+  "assigneeId": "USR-NET2",
+  "priority": "High",
+  "status": "In Progress",
+  "dueAt": "2026-10-02T12:00:00.000Z"
+}
