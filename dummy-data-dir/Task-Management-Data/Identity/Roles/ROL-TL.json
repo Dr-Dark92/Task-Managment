@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "ROL-TL",
+  "type": "role",
+  "createdAt": "2026-08-01T06:01:00.000Z",
+  "systemKey": "team_leader",
+  "name": "Team Leader",
+  "permissions": [
+    "tasks.view",
+    "tasks.create",
+    "tasks.delegate",
+    "tasks.edit",
+    "tasks.close",
+    "tickets.create",
+    "tickets.assign",
+    "kpi.self",
+    "kpi.team"
+  ],
+  "protected": false
+}
