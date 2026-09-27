@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-003",
+  "type": "actionRecord",
+  "createdAt": "2026-09-25T10:20:00.000Z",
+  "actorId": "USR-SYS1",
+  "actionType": "Change Domain Policy",
+  "target": "Disable legacy NTLM",
+  "reason": "Hardening requirement",
+  "details": "Immediate operational action taken for Disable legacy NTLM.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1002",
+  "groupId": "GRP-SYS"
+}
