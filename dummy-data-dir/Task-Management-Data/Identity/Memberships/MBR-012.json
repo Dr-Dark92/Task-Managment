@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "id": "MBR-012",
+  "type": "membership",
+  "createdAt": "2026-08-02T08:00:00.000Z",
+  "userId": "USR-EMP2",
+  "groupId": "GRP-SYS",
+  "roleId": "ROL-EMP",
+  "enabled": true
+}
