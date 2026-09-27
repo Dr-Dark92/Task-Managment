@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-003",
+  "type": "ticket",
+  "createdAt": "2026-09-21T09:15:00.000Z",
+  "requesterId": "USR-APP2",
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Investigate suspicious web alert",
+  "description": "Detailed dummy ticket for Investigate suspicious web alert.",
+  "priority": "High",
+  "assigneeId": "USR-SOC2",
+  "status": "Pending Resolution"
+}
