@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-002",
+  "type": "ticket",
+  "createdAt": "2026-09-20T09:15:00.000Z",
+  "requesterId": "USR-EMP2",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Domain account locks repeatedly",
+  "description": "Detailed dummy ticket for Domain account locks repeatedly.",
+  "priority": "Normal",
+  "assigneeId": "USR-SYS2",
+  "status": "Resolved"
+}
