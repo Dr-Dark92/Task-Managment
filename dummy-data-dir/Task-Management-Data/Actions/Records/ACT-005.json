@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-005",
+  "type": "actionRecord",
+  "createdAt": "2026-09-26T12:20:00.000Z",
+  "actorId": "USR-SYS2",
+  "actionType": "Disable Account",
+  "target": "contractor.temp",
+  "reason": "Authentication after contract end",
+  "details": "Immediate operational action taken for contractor.temp.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1004",
+  "groupId": "GRP-SYS"
+}
