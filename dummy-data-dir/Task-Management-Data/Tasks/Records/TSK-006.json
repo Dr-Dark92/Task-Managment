@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-006",
+  "type": "task",
+  "createdAt": "2026-09-15T09:30:00.000Z",
+  "projectId": "PRJ-003",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Disable NTLMv1 by GPO",
+  "description": "Detailed dummy task for Disable NTLMv1 by GPO.",
+  "creatorId": "USR-SYS1",
+  "assigneeId": "USR-SYS2",
+  "priority": "Critical",
+  "status": "Completed",
+  "dueAt": "2026-09-20T12:00:00.000Z"
+}
