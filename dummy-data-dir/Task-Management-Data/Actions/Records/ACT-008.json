@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-008",
+  "type": "actionRecord",
+  "createdAt": "2026-09-27T15:20:00.000Z",
+  "actorId": "USR-SOC1",
+  "actionType": "Block External IP",
+  "target": "198.51.100.77",
+  "reason": "Password spraying source",
+  "details": "Immediate operational action taken for 198.51.100.77.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1007",
+  "groupId": "GRP-SOC"
+}
