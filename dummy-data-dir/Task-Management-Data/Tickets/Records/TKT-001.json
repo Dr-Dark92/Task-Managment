@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "TKT-001",
+  "type": "ticket",
+  "createdAt": "2026-09-19T09:15:00.000Z",
+  "requesterId": "USR-SOC2",
+  "responsibleGroupId": "GRP-NET",
+  "title": "Firewall denies vulnerability scanner",
+  "description": "Detailed dummy ticket for Firewall denies vulnerability scanner.",
+  "priority": "High",
+  "assigneeId": "USR-NET2",
+  "status": "In Progress"
+}
