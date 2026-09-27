@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "PRJ-005",
+  "type": "project",
+  "createdAt": "2026-09-01T06:00:00.000Z",
+  "name": "Internal Application Security Baseline",
+  "description": "Detailed synthetic project for Internal Application Security Baseline.",
+  "ownerId": "USR-APP1",
+  "status": "On Hold",
+  "startDate": "2026-09-01",
+  "targetDate": "2026-12-15"
+}
