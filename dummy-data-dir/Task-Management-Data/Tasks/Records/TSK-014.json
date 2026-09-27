@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-014",
+  "type": "task",
+  "createdAt": "2026-09-23T10:15:00.000Z",
+  "projectId": null,
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Patch legacy jump server",
+  "description": "Detailed dummy task for Patch legacy jump server.",
+  "creatorId": "USR-SYS1",
+  "assigneeId": "USR-SYS2",
+  "priority": "High",
+  "status": "Completed",
+  "dueAt": "2026-09-22T12:00:00.000Z"
+}
