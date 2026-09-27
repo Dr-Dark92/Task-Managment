@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-006",
+  "type": "actionRecord",
+  "createdAt": "2026-09-26T13:20:00.000Z",
+  "actorId": "USR-NET2",
+  "actionType": "Change Firewall Rule",
+  "target": "DMZ-WEB TCP/445",
+  "reason": "Unexpected SMB egress",
+  "details": "Immediate operational action taken for DMZ-WEB TCP/445.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1005",
+  "groupId": "GRP-NET"
+}
