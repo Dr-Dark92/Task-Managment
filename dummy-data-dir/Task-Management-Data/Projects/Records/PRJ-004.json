@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "PRJ-004",
+  "type": "project",
+  "createdAt": "2026-07-01T06:00:00.000Z",
+  "name": "Security Policy Review 2026",
+  "description": "Detailed synthetic project for Security Policy Review 2026.",
+  "ownerId": "USR-GRC1",
+  "status": "Completed",
+  "startDate": "2026-07-01",
+  "targetDate": "2026-09-10"
+}
