@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "ROL-EMP",
+  "type": "role",
+  "createdAt": "2026-08-01T06:01:00.000Z",
+  "systemKey": "employee",
+  "name": "Employee",
+  "permissions": [
+    "tasks.view",
+    "tasks.updateOwn",
+    "tickets.create",
+    "kpi.self"
+  ],
+  "protected": false
+}
