@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "PRJ-003",
+  "type": "project",
+  "createdAt": "2026-08-15T06:00:00.000Z",
+  "name": "Active Directory Hardening",
+  "description": "Detailed synthetic project for Active Directory Hardening.",
+  "ownerId": "USR-SYS1",
+  "status": "Active",
+  "startDate": "2026-08-15",
+  "targetDate": "2026-10-15"
+}
