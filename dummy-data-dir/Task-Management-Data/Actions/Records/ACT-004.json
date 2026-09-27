@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "id": "ACT-004",
+  "type": "actionRecord",
+  "createdAt": "2026-09-25T11:20:00.000Z",
+  "actorId": "USR-SOC2",
+  "actionType": "Isolate Endpoint",
+  "target": "WS-FIN-044",
+  "reason": "Credential dumping alert",
+  "details": "Immediate operational action taken for WS-FIN-044.",
+  "impact": "Scoped to affected service or asset and monitored after change.",
+  "evidence": "DEMO-REF-1003",
+  "groupId": "GRP-SOC"
+}
