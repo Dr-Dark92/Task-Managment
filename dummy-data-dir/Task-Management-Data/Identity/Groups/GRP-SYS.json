@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "GRP-SYS",
+  "type": "group",
+  "createdAt": "2026-08-02T06:00:00.000Z",
+  "name": "Systems Engineering",
+  "description": "Windows, Linux and directory services",
+  "enabled": true
+}
