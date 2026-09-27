@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-003",
+  "type": "task",
+  "createdAt": "2026-09-12T09:30:00.000Z",
+  "projectId": "PRJ-001",
+  "responsibleGroupId": "GRP-SOC",
+  "title": "Tune DNS tunneling detection",
+  "description": "Detailed dummy task for Tune DNS tunneling detection.",
+  "creatorId": "USR-SOC1",
+  "assigneeId": "USR-EMP1",
+  "priority": "Normal",
+  "status": "Pending Review",
+  "dueAt": "2026-09-29T12:00:00.000Z"
+}
