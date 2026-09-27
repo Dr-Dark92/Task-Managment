@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-005",
+  "type": "task",
+  "createdAt": "2026-09-14T09:30:00.000Z",
+  "projectId": "PRJ-002",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Move management interfaces",
+  "description": "Detailed dummy task for Move management interfaces.",
+  "creatorId": "USR-NET1",
+  "assigneeId": "USR-SYS2",
+  "priority": "High",
+  "status": "Assigned",
+  "dueAt": "2026-10-05T12:00:00.000Z"
+}
