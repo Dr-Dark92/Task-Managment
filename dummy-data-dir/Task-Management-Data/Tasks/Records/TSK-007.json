@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-007",
+  "type": "task",
+  "createdAt": "2026-09-16T09:30:00.000Z",
+  "projectId": "PRJ-003",
+  "responsibleGroupId": "GRP-SYS",
+  "title": "Review privileged domain groups",
+  "description": "Detailed dummy task for Review privileged domain groups.",
+  "creatorId": "USR-SYS1",
+  "assigneeId": "USR-SYS2",
+  "priority": "High",
+  "status": "Blocked",
+  "dueAt": "2026-09-24T12:00:00.000Z"
+}
