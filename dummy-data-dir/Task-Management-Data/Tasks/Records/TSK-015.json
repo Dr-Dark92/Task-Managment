@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "TSK-015",
+  "type": "task",
+  "createdAt": "2026-09-24T10:15:00.000Z",
+  "projectId": null,
+  "responsibleGroupId": "GRP-APP",
+  "title": "Validate internal portal headers",
+  "description": "Detailed dummy task for Validate internal portal headers.",
+  "creatorId": "USR-APP1",
+  "assigneeId": "USR-APP2",
+  "priority": "Normal",
+  "status": "Pending Review",
+  "dueAt": "2026-09-28T12:00:00.000Z"
+}
