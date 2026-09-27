@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "GRP-APP",
+  "type": "group",
+  "createdAt": "2026-08-02T06:00:00.000Z",
+  "name": "Application Security",
+  "description": "Application testing and secure delivery",
+  "enabled": true
+}
