@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "USR-ADMIN",
+  "type": "user",
+  "createdAt": "2026-08-02T07:00:00.000Z",
+  "username": "demo.admin",
+  "displayName": "Demo Administrator",
+  "enabled": true
+}
