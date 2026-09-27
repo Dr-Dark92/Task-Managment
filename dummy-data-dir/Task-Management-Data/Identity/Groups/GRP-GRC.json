@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "GRP-GRC",
+  "type": "group",
+  "createdAt": "2026-08-02T06:00:00.000Z",
+  "name": "Governance & Risk",
+  "description": "Audit, policy and compliance",
+  "enabled": true
+}
