@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "PRC-001",
+  "type": "projectComment",
+  "createdAt": "2026-09-26T14:00:00.000Z",
+  "projectId": "PRJ-001",
+  "authorId": "USR-SOC2",
+  "html": "<b>Dashboard validation completed.</b> Network telemetry remains in progress."
+}
