@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "ANN-001",
+  "type": "announcement",
+  "createdAt": "2026-09-26T06:00:00.000Z",
+  "level": "global",
+  "title": "Maintenance Window",
+  "message": "Core firewall maintenance Thursday 22:00.",
+  "creatorId": "USR-ADMIN",
+  "groupId": null,
+  "projectId": null,
+  "remindAt": null,
+  "expiresAt": null,
+  "enabled": true
+}
