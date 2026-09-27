@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "GRP-SOC",
+  "type": "group",
+  "createdAt": "2026-08-02T06:00:00.000Z",
+  "name": "Security Operations",
+  "description": "Monitoring, incident response and threat analysis",
+  "enabled": true
+}
