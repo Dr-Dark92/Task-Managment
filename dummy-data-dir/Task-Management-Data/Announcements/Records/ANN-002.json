@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "id": "ANN-002",
+  "type": "announcement",
+  "createdAt": "2026-09-26T06:10:00.000Z",
+  "level": "group",
+  "title": "SOC Review",
+  "message": "Daily detection review moved to 09:30.",
+  "creatorId": "USR-SOC1",
+  "groupId": "GRP-SOC",
+  "projectId": null,
+  "remindAt": null,
+  "expiresAt": null,
+  "enabled": true
+}
