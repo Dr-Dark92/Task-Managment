@@ -12,10 +12,12 @@ TM.FileSystem=(()=>{
  async function walk(parts=[],create=false){if(!root)throw Error('No workspace selected');let d=root;for(const n of parts){if(!valid(n))throw Error('Invalid path component: '+n);d=await d.getDirectoryHandle(n,{create})}return d}
  async function createDirectory(parts){return walk(parts,true)}
  async function createJSON(dirParts,name,obj){if(!valid(name)||!name.endsWith('.json'))throw Error('Invalid JSON filename');const d=await walk(dirParts,true);for await(const k of d.keys())if(k===name)throw Error('Immutable record already exists: '+name);const h=await d.getFileHandle(name,{create:true});const w=await h.createWritable();try{await w.write(JSON.stringify(obj,null,2));await w.close()}catch(e){try{await w.abort()}catch{};throw e}return name}
+ async function writeFile(dirParts,name,data){if(!valid(name))throw Error('Invalid filename');const d=await walk(dirParts,true);for await(const k of d.keys())if(k===name)throw Error('File already exists: '+name);const h=await d.getFileHandle(name,{create:true}),w=await h.createWritable();try{await w.write(data);await w.close()}catch(e){try{await w.abort()}catch{};throw e}return name}
+ async function readFile(dirParts,name){const d=await walk(dirParts),h=await d.getFileHandle(name);return h.getFile()}
  async function readJSON(dirParts,name){const d=await walk(dirParts);const h=await d.getFileHandle(name);return JSON.parse(await (await h.getFile()).text())}
  async function list(dirParts=[]){const d=await walk(dirParts),a=[];for await(const [name,h] of d.entries())a.push({name,kind:h.kind});return a.sort((a,b)=>a.name.localeCompare(b.name))}
  async function exists(dirParts,name){try{const d=await walk(dirParts);for await(const k of d.keys())if(k===name)return true;return false}catch{return false}}
  async function remove(dirParts,name,recursive=false){if(!valid(name))throw Error('Invalid name');const d=await walk(dirParts);await d.removeEntry(name,{recursive})}
  async function initializeWorkspace(){await ensurePermission();const base=['Task-Management-Data'];for(const p of [['System'],['Identity'],['Projects'],['Tasks'],['Presence'],['Audit'],['_Recovery','Conflicts'],['_Recovery','Corrupt'],['_Recovery','Orphaned']])await walk(base.concat(p),true);return base[0]}
- return{supported:()=>typeof showDirectoryPicker==='function',current:()=>root,selectWorkspace,restoreWorkspace,permission,ensurePermission,createDirectory,createJSON,readJSON,list,exists,remove,initializeWorkspace};
+ return{supported:()=>typeof showDirectoryPicker==='function',current:()=>root,selectWorkspace,restoreWorkspace,permission,ensurePermission,createDirectory,createJSON,writeFile,readFile,readJSON,list,exists,remove,initializeWorkspace};
 })();
