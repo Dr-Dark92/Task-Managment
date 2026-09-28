@@ -1,0 +1,11 @@
+window.TM=window.TM||{};
+TM.Leaves=(()=>{
+ const clean=v=>String(v??'').trim();
+ async function state(id){const base=await TM.Store.get('publicLeave',id),s={...base};const es=(await TM.Store.list('publicLeaveEvent')).filter(x=>!x._corrupt&&x.leaveId===id).sort((a,b)=>String(a.createdAt).localeCompare(String(b.createdAt))||a.id.localeCompare(b.id));for(const e of es){if(e.action==='edit')Object.assign(s,e.value||{});if(e.action==='delete'){s.deleted=true;s.deletedAt=e.createdAt;s.deletedBy=e.actorId}}return s}
+ async function list(){const out=[];for(const x of (await TM.Store.list('publicLeave')).filter(x=>!x._corrupt)){const s=await state(x.id);if(!s.deleted)out.push(s)}return out.sort((a,b)=>String(a.startDate).localeCompare(String(b.startDate))||a.id.localeCompare(b.id))}
+ async function create(actorId,{title,startDate,endDate,note=''}){title=clean(title);startDate=clean(startDate);endDate=clean(endDate);note=clean(note);if(!actorId||!title||!startDate||!endDate)throw Error('Title, start date and end date are required');if(endDate<startDate)throw Error('End date cannot be before start date');return TM.Store.create('publicLeave',{ownerId:actorId,title,startDate,endDate,note})}
+ async function mayManage(actorId,row){return row.ownerId===actorId||await TM.Auth.can(actorId,'*')}
+ async function edit(actorId,id,{title,startDate,endDate,note=''}){const row=await state(id);if(row.deleted)throw Error('Leave entry was deleted');if(!await mayManage(actorId,row))throw Error('You can edit only your own leave entries');title=clean(title);startDate=clean(startDate);endDate=clean(endDate);note=clean(note);if(!title||!startDate||!endDate)throw Error('Title, start date and end date are required');if(endDate<startDate)throw Error('End date cannot be before start date');return TM.Store.create('publicLeaveEvent',{leaveId:id,actorId,action:'edit',value:{title,startDate,endDate,note}})}
+ async function remove(actorId,id){const row=await state(id);if(row.deleted)return true;if(!await mayManage(actorId,row))throw Error('You can delete only your own leave entries');return TM.Store.create('publicLeaveEvent',{leaveId:id,actorId,action:'delete',value:null})}
+ return{state,list,create,edit,remove};
+})();
