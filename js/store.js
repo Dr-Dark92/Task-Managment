@@ -26,7 +26,7 @@ TM.Store=(()=>{
   await TM.FileSystem.createJSON(BASE.concat(def.path),id+'.json',record);return record;
  }
  async function get(type,id){const d=TYPES[type];if(!d)throw Error('Unknown record type');return TM.FileSystem.readJSON(BASE.concat(d.path),id+'.json')}
- async function list(type){const d=TYPES[type];if(!d)throw Error('Unknown record type');const out=[];for(const x of await TM.FileSystem.list(BASE.concat(d.path))){if(x.kind!=='file'||!x.name.endsWith('.json'))continue;try{out.push(await TM.FileSystem.readJSON(BASE.concat(d.path),x.name))}catch(e){out.push({_corrupt:true,file:x.name,error:e.message})}}return out}
+ async function list(type){const d=TYPES[type];if(!d)throw Error('Unknown record type');const out=[];for(const x of await TM.FileSystem.list(BASE.concat(d.path))){if(x.kind!=='file'||!x.name.endsWith('.json'))continue;try{const row=await TM.FileSystem.readJSON(BASE.concat(d.path),x.name);if(!row||typeof row!=='object'||row.type!==type||typeof row.id!=='string'||x.name!==row.id+'.json')throw Error('Record identity mismatch');out.push(row)}catch(e){out.push({_corrupt:true,file:x.name,error:e.message})}}return out}
  async function bootstrapSystem(name='Task Management Workspace'){
   await init();const sys=BASE.concat(['System']);
   if(!await TM.FileSystem.exists(sys,'workspace.json'))await TM.FileSystem.createJSON(sys,'workspace.json',{schema:SCHEMA,id:'WORKSPACE',type:'workspace',name,createdAt:now()});
