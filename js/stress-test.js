@@ -2,6 +2,7 @@ window.TM=window.TM||{};
 TM.StressTest=(()=>{
  const CONFIG={users:25,groups:3,projects:50,projectTasks:5,taskComments:5,standaloneTasks:500,tickets:500,personalNotes:25,personalPhones:25,personalEmails:25,leaveDays:15};
  const pad=(n,w=4)=>String(n).padStart(w,'0'),pick=(a,n)=>a[n%a.length],iso=d=>d.toISOString().slice(0,10);
+ async function clearAndFillLeaves(actorId,year=new Date().getFullYear(),progress=()=>{}){if(!actorId||!await TM.Auth.can(actorId,'*'))throw Error('Administrator permission required');const allUsers=(await TM.Store.list('user')).filter(x=>!x._corrupt),users=allUsers.filter(x=>String(x.username||'').startsWith('DUMMY.LOAD.'));if(!users.length)throw Error('No DUMMY load-test users found');const leaves=(await TM.Store.list('publicLeave')).filter(x=>!x._corrupt),events=(await TM.Store.list('publicLeaveEvent')).filter(x=>!x._corrupt);let removed=0;for(const row of leaves){if(String(row.title||'').startsWith('DUMMY.LEAVE.')){await TM.FileSystem.remove(['Task-Management-Data','Leaves','Records'],row.id+'.json');removed++;for(const ev of events.filter(e=>e.leaveId===row.id))try{await TM.FileSystem.remove(['Task-Management-Data','Leaves','Events'],ev.id+'.json')}catch{}}}progress('Cleared '+removed+' DUMMY leave records.');for(let i=0;i<users.length;i++){const month=i%12,day=2+((i*7)%20),start=new Date(Date.UTC(year,month,day)),end=new Date(start);end.setUTCDate(end.getUTCDate()+CONFIG.leaveDays-1);await TM.Store.create('publicLeave',{ownerId:users[i].id,title:'DUMMY.LEAVE.'+CONFIG.leaveDays+'-DAYS.'+pad(i+1,3),startDate:iso(start),endDate:iso(end),note:'DUMMY '+CONFIG.leaveDays+'-day load-test leave · spread across year'});progress('Leaves: '+(i+1)+'/'+users.length)}return{cleared:removed,created:users.length,year}}
  async function generate(actorId,progress=()=>{}){
   if(!actorId)throw Error('Administrator required');
   if(!await TM.Auth.can(actorId,'*'))throw Error('Administrator permission required');
@@ -27,7 +28,7 @@ TM.StressTest=(()=>{
   progress('Creating '+CONFIG.tickets+' tickets…');
   for(let n=1;n<=CONFIG.tickets;n++){const g=groups[(n-1)%groups.length],requester=users[(n-1)%users.length],assignee=users.find((u,idx)=>idx%groups.length===(n-1)%groups.length)||requester;await TM.Store.createTicket({requesterId:requester.id,responsibleGroupId:g.id,title:'DUMMY.TICKET.'+pad(n),description:'DUMMY load-test ticket '+n,priority:pick(['Low','Normal','High','Critical'],n),assigneeId:assignee.id,status:pick(['Open','Assigned','In Progress','Pending Resolution','Resolved','Closed'],n)});if(n%100===0)progress('Tickets: '+n+'/'+CONFIG.tickets);}
   progress('Creating '+CONFIG.leaveDays+'-day leave for all '+CONFIG.users+' users…');
-  for(let i=0;i<users.length;i++){const start=new Date(Date.UTC(2026,9,1+(i%20))),end=new Date(start);end.setUTCDate(end.getUTCDate()+CONFIG.leaveDays-1);await TM.Store.create('publicLeave',{ownerId:users[i].id,title:'DUMMY.LEAVE.'+CONFIG.leaveDays+'-DAYS.'+pad(i+1,3),startDate:iso(start),endDate:iso(end),note:'DUMMY '+CONFIG.leaveDays+'-day load-test leave'})}
+  for(let i=0;i<users.length;i++){const month=i%12,day=2+((i*7)%20),start=new Date(Date.UTC(2026,month,day)),end=new Date(start);end.setUTCDate(end.getUTCDate()+CONFIG.leaveDays-1);await TM.Store.create('publicLeave',{ownerId:users[i].id,title:'DUMMY.LEAVE.'+CONFIG.leaveDays+'-DAYS.'+pad(i+1,3),startDate:iso(start),endDate:iso(end),note:'DUMMY '+CONFIG.leaveDays+'-day load-test leave · spread across year'})}
   progress('Creating Personal Workspace test records for the current administrator…');
   for(let i=1;i<=CONFIG.personalNotes;i++)await TM.PersonalDB.put('notes',actorId,{id:'DUMMY.LOAD.NOTE.'+pad(i,3),title:'DUMMY Note '+pad(i,3),body:'DUMMY personal workspace load-test note '+i,tags:'DUMMY,load-test'});
   for(let i=1;i<=CONFIG.personalPhones;i++)await TM.PersonalDB.put('phonebook',actorId,{id:'DUMMY.LOAD.PHONE.'+pad(i,3),name:'DUMMY Contact '+pad(i,3),organization:'DUMMY Organization',phone:'+968 90'+pad(i,6),extension:pad(i,3),notes:'DUMMY phone-book load test'});
@@ -35,5 +36,5 @@ TM.StressTest=(()=>{
   const summary={users:users.length,groups:groups.length,projects:projects.length,projectTasks:CONFIG.projects*CONFIG.projectTasks,standaloneTasks:CONFIG.standaloneTasks,taskComments:(CONFIG.projects*CONFIG.projectTasks+CONFIG.standaloneTasks)*CONFIG.taskComments,tickets:CONFIG.tickets,leaves:users.length,personalNotes:CONFIG.personalNotes,personalPhones:CONFIG.personalPhones,personalEmails:CONFIG.personalEmails};
   localStorage.setItem('tm-load-test-summary',JSON.stringify({...summary,generatedAt:new Date().toISOString()}));progress('Load-test environment complete.');return summary;
  }
- return{CONFIG,generate};
+ return{CONFIG,generate,clearAndFillLeaves};
 })();
